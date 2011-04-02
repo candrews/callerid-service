@@ -1,0 +1,32 @@
+<?php
+if (!defined('CALLERID')) {
+    // This check helps protect against security problems;
+    // your code file can't be executed directly from the web.
+    exit(1);
+}
+
+//include the name of the source that returned the result in the output?
+$config['include_source_in_result']=true;
+
+// configure your sources by adding to the $source_configuration array.
+//you can check a local database by configuring the MySQLiDB source
+/*
+$config['sources'][]=
+    array(
+        'name'=>'MySQLiDB',
+        'params'=>array(
+            'DB_Host'=>'localhost',
+            'DB_Name'=>'phone',
+            'DB_User'=>'phone',
+            'DB_Password'=>'PASSWORD',
+            'SQL_Query'=>'select callerid from phone where phone=?'
+        )
+    );
+*/
+//if a source doesn't take any parameters, simply give the source's name.
+$config['sources'][]='YellowPages';
+$config['sources'][]='Google';
+$config['sources'][]='Addresses';
+$config['sources'][]='WhitePages';
+$config['sources'][]='TelcoData';
+
