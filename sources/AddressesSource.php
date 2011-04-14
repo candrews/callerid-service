@@ -145,33 +145,42 @@ class AddressesSource extends HTTPSource
 	{
         if($this->response->code == 200){
             $body = $this->response->body;
-		
-		    $start= strpos($body, "wp_listing_name");
-		
-		    if($start>1)
-		    {
-			    $body = substr($body,$start);
-			    $start= strpos($body, ">");
-			    $body = substr($body,$start+1);
-			    $end = strpos($body, "</div>");
-			    $end = ($end > strpos($body,"&nbsp;<img")) ? strpos($body,"&nbsp;<img") : $end;
-			    $name = substr($body,0,$end);
-			    $name = str_replace( chr(13), "", $name ); 
-			    $name = str_replace( chr(10), "", $name ); 
-			    $name = str_replace( "<div>", "", $name ); 
-			    $name = str_replace( "</a>", "", $name ); 
-			    $name = trim(str_replace( "&nbsp;", "", $name ));
-			    $result = new Result();
-			    $result->name = $name;
-			    return $result;
-		    }
-		    else
-		    {
-			    return false;
-		    }
+
+		    $result = new Result();
+		    $result->name = $this->get_name($body);
+		    if(empty($result->name)){
+		        return false;
+	        }
+		    $result->address = $this->get_address($body);
+		    return $result;
 	    }else{
 	        return false;
 	    }
+	}
+
+	function get_name($body){
+	    $patternName = '/<div class=["\']phone_detail_name["\']>.*?<a .*?>(.*?)<\/a>/si';
+	    preg_match($patternName, $body, $name);
+	    if(isset($name[1])){
+	        return trim(strip_tags($name[1]));
+        }else{
+            return false;
+        }
+	}
+
+	function get_address($body){
+	    $patternAddress = '/<div class=["\']phone_detail_addr["\']>(.*?)(?:<br>(.*?))?(?:<br>(.*?))?<\/div>/si';
+	    preg_match($patternAddress, $body, $address);
+	    //1 should be the street address
+	    //2 should be the city
+	    //3 should be phone number (which we'll ignore)
+	    if(isset($address[1])){
+	        $ret = $address[1];
+	        if(isset($address[1])) $ret.=', '.$address[2];
+	        return trim(strip_tags($ret));
+        }else{
+            return false;
+        }
 	}
 }
 
