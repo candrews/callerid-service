@@ -151,6 +151,9 @@ class GoogleSource extends HTTPSource
 		    if (strlen($body) > 1)
 		    {
 			    $caller_id = strip_tags($body);
+			    $result = new Result();
+			    $result->name = $caller_id;
+			    return $result;
 		    }
 		    else
 		    {
