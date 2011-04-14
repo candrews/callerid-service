@@ -167,6 +167,8 @@ class TelcoDataSource extends HTTPSource
 		    {
 			    $result = new Result();
 			    $result->name = strip_tags($body);
+			    //since this source only returns a location, address and name are the same
+			    $result->address = $result->name;
 			    return $result;
 		    }
 		    else

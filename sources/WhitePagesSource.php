@@ -144,68 +144,89 @@ class WhitePagesSource extends HTTPSource
 	function parse_response()
 	{
         if($this->response->code == 200){
+	        $result = new Result();
+	        
 	        $body = $this->response->body;
 	        
 		    $notfound = strpos($body, "PHONE_USER_ERROR");
 		    $notfound = ($notfound < 1) ? strpos($body, "PHONE_NO_RESULTS") : $notfound;
+		    if($notfound)
+		    {
+			    return false;
+		    }
+		    
 		    $patternFirst = "/FIRST.*?\"(.*?)\",/";
 		    $patternLast = "/LAST.*?\"(.*?)\",/";
+		    $patternAddress = "/ADDRESS_ESC.*?\"(.*?)\",/";
 		    $patternCity = "/CITY.*?\"(.*?)\",/";
 		    $patternState = "/STATE.*?\"(.*?)\",/";
 		    $patternType = "/Type: *(.*?)<\/span>/";
 		    $patternCompany = "/Company: <\/strong><span class=\"org\">(.*?)<\/span>/";
 		    $patternName = "/<span class=\"name\">(.*?)<\/span>/";
+		    
+            preg_match($patternCompany, $body, $company);
+            if(isset($company[1])){
+                $result->company = trim(strip_tags($company[1]));
+            }
 		
 		    // Look at named results first
 		    preg_match($patternName, $body, $namespans);
-		    $name = (isset($namespans[1])) ? trim(strip_tags($namespans[1])) : '';
-		
-		    if($name == '')
-		    {
-			    //look for company name
-			    preg_match($patternCompany, $body, $company);
-			    $name = (isset($company[1])) ? trim(strip_tags($company[1])) : '';
-			    if($name == '')
-			    {
-				    //now look for a first and last name
-				    preg_match($patternFirst, $body, $first);
-				    preg_match($patternLast, $body, $last);
-				    if(isset($first[1]) && isset($last[1])){
-					    $name = $first[1]." ".$last[1];
-				    }
-				    if($name == " ")
+		    if(isset($namespans[1])){
+		        $result->name = trim(strip_tags($namespans[1]));
+	        }else{
+	            //now look for a first and last name
+			    preg_match($patternFirst, $body, $first);
+			    preg_match($patternLast, $body, $last);
+			    if(isset($first[1]) && isset($last[1])){
+				    $result->name = trim(strip_tags($first[1]." ".$last[1]));
+			    }else{
+				    $start= strpos($body, "</strong> based in <strong>");
+				
+				    if($start > 1)
 				    {
-					    $start= strpos($body, "</strong> based in <strong>");
-					
-					    if($start > 1)
-					    {
-						    $body = substr($body,$start);
-						    $start= strpos($body, "<strong>");
-						    $body = substr($body,$start+8);
-						    $end= strpos($body, "</strong>");
-						    $name = substr($body,0,$end);
-						    $name = str_replace( chr(13), "", $name ); 
-						    $name = str_replace( chr(10), "", $name ); 
-						    $name = trim(str_replace( "&nbsp;", "", $name ));
-					    }
+					    $body = substr($body,$start);
+					    $start= strpos($body, "<strong>");
+					    $body = substr($body,$start+8);
+					    $end= strpos($body, "</strong>");
+					    $name = substr($body,0,$end);
+					    $name = str_replace( chr(13), "", $name ); 
+					    $name = str_replace( chr(10), "", $name ); 
+					    $name = trim(str_replace( "&nbsp;", "", $name ));
+				        $result->name = trim(strip_tags($name));
 				    }
 			    }
-		    }
-		
-		    if($notfound)
-		    {
-			    return false;
-		    }
-		
-		    if(strlen($name) > 1)
-		    {
-		        $result = new Result();
-		        $result->name = strip_tags($name);
+	        }
+	        if(empty($result->name)){
+	            $result->name = $result->company;
+            }
+            if(empty($result->name)){
+                //couldn't find a name... have to return failure
+                return false;
+            }else{
+		        preg_match($patternAddress, $body, $address);
+		        if(isset($address[1])){
+		            $result->address = $address[1];
+	            }
+		        preg_match($patternCity, $body, $city);
+		        if(isset($city[1])){
+		            if(empty($result->address)){
+		                $result->address = $city[1];
+	                }else{
+		                $result->address .= ', ' . $city[1];
+	                }
+	            }
+		        preg_match($patternState, $body, $state);
+		        if(isset($state[1])){
+		            if(empty($result->address)){
+		                $result->address = $state[1];
+	                }else{
+		                $result->address .= ', ' . $state[1];
+	                }
+	            }
+	            if(!empty($result->address)){
+	                $result->address = trim(strip_tags($result->address));
+                }
 		        return $result;
-		    }
-		    else
-		    {
-	            return false;
 		    }
 	    }else{
 	        return false;

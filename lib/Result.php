@@ -8,5 +8,7 @@ if (!defined('CALLERID')) {
 class Result
 {
     public $name;
+    public $address;
+    public $company;
 }
 
