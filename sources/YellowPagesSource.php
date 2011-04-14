@@ -131,35 +131,63 @@ class YellowPagesSource extends HTTPSource
     {
         return $this->curl_helper('http://yellowpages.addresses.com/yellow-pages/phone:' . $this->thenumber . '/listings.html');
     }
-    
+
     function parse_response()
     {
         if($this->response->code == 200){
             $body = $this->response->body;
-		
-		    $start= strpos($body, "listing_name");
-		
-		    if($start > 1)
-		    {
-			    $body = substr($body,$start);
-			    $start= strpos($body, ">");
-			    $body = substr($body,$start+1);
-			    $end= strpos($body, "</a>");
-			    $name = substr($body,0,$end);
-			    $name = str_replace( chr(13), "", $name ); 
-			    $name = str_replace( chr(10), "", $name ); 
-			    $name = str_replace( "<div>", "", $name ); 
-			    $name = str_replace( "</a>", "", $name ); 
-			    $name = trim(str_replace( "&nbsp;", "", $name ));
-			    $result = new Result();
-			    $result->name = $name;
-			    return $result;
-		    }else{
+
+		    $result = new Result();
+		    $result->name = $this->get_name($body);
+		    if(empty($result->name)){
 		        return false;
-		    }
+	        }
+		    $result->address = $this->get_address($body);
+		    //for yellow pages, all results are company names, so company = name
+		    $result->company = $result->name;
+		    return $result;
 	    }else{
 	        return false;
 	    }
+	}
+
+	function get_name($body){
+	    $start= strpos($body, "listing_name");
+	    if($start > 1){
+	        $body = substr($body,$start);
+	        $start= strpos($body, ">");
+	        $body = substr($body,$start+1);
+	        $end= strpos($body, "</a>");
+	        $name = substr($body,0,$end);
+	        $name = str_replace( chr(13), "", $name );
+	        $name = str_replace( chr(10), "", $name );
+	        $name = str_replace( "<div>", "", $name );
+	        $name = str_replace( "</a>", "", $name );
+	        $name = trim(str_replace( "&nbsp;", "", $name ));
+	        return trim(strip_tags($name));
+        }else{
+            return null;
+        }
+	}
+
+	function get_address($body){
+	    $start= strpos($body, "sml_txt");
+	    if($start > 1){
+	        $body = substr($body,$start);
+	        $start= strpos($body, ">");
+	        $body = substr($body,$start+1);
+	        $end= strpos($body, "</div>");
+	        $name = substr($body,0,$end);
+	        $name = str_replace( chr(13), "", $name );
+	        $name = str_replace( chr(10), "", $name );
+	        $name = str_replace( "<div>", "", $name );
+	        $name = str_replace( "</a>", "", $name );
+	        $name = trim(str_replace( "&nbsp;", "", $name ));
+	        $name = trim(str_replace( "<br/>", ", ", $name ));
+	        return trim(strip_tags($name));
+        }else{
+            return null;
+        }
 	}
 }
 
