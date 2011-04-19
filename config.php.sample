@@ -30,5 +30,6 @@ $config['sources'][]='Addresses';
 $config['sources'][]='WhitePages';
 $config['sources'][]='WhitePagesCanada';
 $config['sources'][]='Canpages';
+$config['sources'][]='Hitta';
 $config['sources'][]='TelcoData';
 
