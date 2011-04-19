@@ -28,5 +28,6 @@ $config['sources'][]='YellowPages';
 $config['sources'][]='Google';
 $config['sources'][]='Addresses';
 $config['sources'][]='WhitePages';
+$config['sources'][]='Canpages';
 $config['sources'][]='TelcoData';
 
