@@ -147,11 +147,11 @@ class AddressesSource extends HTTPSource
             $body = $this->response->body;
 
 		    $result = new Result();
-		    $result->name = $this->get_name($body);
+		    $result->name = $this->clean_scraped_html($this->get_name($body));
 		    if(empty($result->name)){
 		        return false;
 	        }
-		    $result->address = $this->get_address($body);
+		    $result->address = $this->clean_scraped_html($this->get_address($body));
 		    return $result;
 	    }else{
 	        return false;
@@ -162,7 +162,7 @@ class AddressesSource extends HTTPSource
 	    $patternName = '/<div class=["\']phone_detail_name["\']>.*?<a .*?>(.*?)<\/a>/si';
 	    preg_match($patternName, $body, $name);
 	    if(isset($name[1])){
-	        return trim(strip_tags($name[1]));
+	        return $name[1];
         }else{
             return false;
         }
@@ -177,7 +177,7 @@ class AddressesSource extends HTTPSource
 	    if(isset($address[1])){
 	        $ret = $address[1];
 	        if(isset($address[1])) $ret.=', '.$address[2];
-	        return trim(strip_tags($ret));
+	        return $ret;
         }else{
             return false;
         }

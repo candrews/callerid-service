@@ -138,11 +138,11 @@ class YellowPagesSource extends HTTPSource
             $body = $this->response->body;
 
 		    $result = new Result();
-		    $result->name = $this->get_name($body);
+		    $result->name = $this->clean_scraped_html($this->get_name($body));
 		    if(empty($result->name)){
 		        return false;
 	        }
-		    $result->address = $this->get_address($body);
+		    $result->address = $this->clean_scraped_html($this->get_address($body));
 		    //for yellow pages, all results are company names, so company = name
 		    $result->company = $result->name;
 		    return $result;
@@ -159,12 +159,7 @@ class YellowPagesSource extends HTTPSource
 	        $body = substr($body,$start+1);
 	        $end= strpos($body, "</a>");
 	        $name = substr($body,0,$end);
-	        $name = str_replace( chr(13), "", $name );
-	        $name = str_replace( chr(10), "", $name );
-	        $name = str_replace( "<div>", "", $name );
-	        $name = str_replace( "</a>", "", $name );
-	        $name = trim(str_replace( "&nbsp;", "", $name ));
-	        return trim(strip_tags($name));
+	        return $name;
         }else{
             return null;
         }
@@ -178,13 +173,7 @@ class YellowPagesSource extends HTTPSource
 	        $body = substr($body,$start+1);
 	        $end= strpos($body, "</div>");
 	        $name = substr($body,0,$end);
-	        $name = str_replace( chr(13), "", $name );
-	        $name = str_replace( chr(10), "", $name );
-	        $name = str_replace( "<div>", "", $name );
-	        $name = str_replace( "</a>", "", $name );
-	        $name = trim(str_replace( "&nbsp;", "", $name ));
-	        $name = trim(str_replace( "<br/>", ", ", $name ));
-	        return trim(strip_tags($name));
+	        return $name;
         }else{
             return null;
         }

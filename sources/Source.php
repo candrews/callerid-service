@@ -19,5 +19,27 @@ abstract class Source
     function is_applicable(){
         return true;
     }
+    
+    /**
+     * given a block of messy, scraped html contains tags, escape sequences, etc, return a cleaned up string ready to be displayed to the user
+     * 
+     * if the parameter is empty, return null
+     * removes multiple white spaces
+     * replaces new line with spaces, 
+     * convert html entities to unicode characters
+     * strips html tags
+     * trim leading/trailing white space
+     */
+    function clean_scraped_html($html){
+        if(empty($html))
+            return null;
+        else
+            $ret = trim(preg_replace('/\s+/',' ',html_entity_decode(strip_tags($html),ENT_QUOTES,'UTF-8')));
+            if(empty($ret)){
+                return null;
+            }else{
+                return $ret;
+            }
+    }
 }
 

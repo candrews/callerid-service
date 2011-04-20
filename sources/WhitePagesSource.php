@@ -140,7 +140,6 @@ class WhitePagesSource extends HTTPSource
 	{
 		return $this->curl_helper('http://www.whitepages.com/search/ReversePhone?full_phone=' . $this->thenumber);
 	}
-	
 	function parse_response()
 	{
         if($this->response->code == 200){
@@ -166,33 +165,30 @@ class WhitePagesSource extends HTTPSource
 		    
             preg_match($patternCompany, $body, $company);
             if(isset($company[1])){
-                $result->company = trim(strip_tags($company[1]));
+                $result->company = $this->clean_scraped_html($company[1]);
             }
 		
 		    // Look at named results first
 		    preg_match($patternName, $body, $namespans);
 		    if(isset($namespans[1])){
-		        $result->name = trim(strip_tags($namespans[1]));
+		        $result->name = $this->clean_scraped_html($namespans[1]);
 	        }else{
 	            //now look for a first and last name
 			    preg_match($patternFirst, $body, $first);
 			    preg_match($patternLast, $body, $last);
 			    if(isset($first[1]) && isset($last[1])){
-				    $result->name = trim(strip_tags($first[1]." ".$last[1]));
+				    $result->name = $this->clean_scraped_html($first[1].' '.$last[1]);
 			    }else{
-				    $start= strpos($body, "</strong> based in <strong>");
+				    $start= strpos($body, '</strong> based in <strong>');
 				
 				    if($start > 1)
 				    {
 					    $body = substr($body,$start);
-					    $start= strpos($body, "<strong>");
+					    $start= strpos($body, '<strong>');
 					    $body = substr($body,$start+8);
-					    $end= strpos($body, "</strong>");
+					    $end= strpos($body, '</strong>');
 					    $name = substr($body,0,$end);
-					    $name = str_replace( chr(13), "", $name ); 
-					    $name = str_replace( chr(10), "", $name ); 
-					    $name = trim(str_replace( "&nbsp;", "", $name ));
-				        $result->name = trim(strip_tags($name));
+				        $result->name = $this->clean_scraped_html($name);
 				    }
 			    }
 	        }
@@ -224,7 +220,7 @@ class WhitePagesSource extends HTTPSource
 	                }
 	            }
 	            if(!empty($result->address)){
-	                $result->address = trim(strip_tags($result->address));
+	                $result->address = $this->clean_scraped_html($result->address);
                 }
 		        return $result;
 		    }

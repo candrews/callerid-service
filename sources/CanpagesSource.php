@@ -116,20 +116,17 @@ class CanpagesSource extends HTTPSource
 		    
             preg_match($patternCompany, $body, $company);
             if(isset($company[1])){
-                $temp = preg_replace('/\s+/',' ',trim(strip_tags($company[1])));
-                if(!empty($temp)) $result->company = $temp;
+                $result->company = $this->clean_scraped_html($company[1]);
             }
 		    
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
-                $temp = preg_replace('/\s+/',' ',trim(strip_tags($name[1])));
-                if(!empty($temp)) $result->name = $temp;
+                $result->name = $this->clean_scraped_html($name[1]);
             }
 		    
             preg_match($patternAddress, $body, $address);
             if(isset($address[1])){
-                $temp = preg_replace('/\s+/',' ',trim(strip_tags($address[1])));
-                if(!empty($temp)) $result->address = $temp;
+                $result->address = $this->clean_scraped_html($address[1]);
             }
 
 	        if(empty($result->name)){

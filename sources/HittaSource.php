@@ -71,11 +71,11 @@ class HittaSource extends HTTPSource
             $body = $this->response->body;
 
 		    $result = new Result();
-		    $result->name = $this->get_name($body);
+		    $result->name = $this->clean_scraped_html($this->get_name($body));
 		    if(empty($result->name)){
 		        return false;
 	        }
-		    $result->address = $this->get_address($body);
+		    $result->address = $this->clean_scraped_html($this->get_address($body));
 		    return $result;
 	    }else{
 	        return false;
@@ -86,7 +86,7 @@ class HittaSource extends HTTPSource
 	    $patternName = '/<p><b>(.+)<\/b>/si';
 	    preg_match($patternName, $body, $name);
 	    if(isset($name[1])){
-	        return html_entity_decode(trim(strip_tags($name[1])),ENT_QUOTES,'UTF-8');
+	        return $name[1];
         }else{
             return null;
         }
@@ -96,7 +96,7 @@ class HittaSource extends HTTPSource
 	    $patternAddress = '/href="wtai.*?title="Link".*?<br\/>(.*?)<a/si';
 	    preg_match($patternAddress, $body, $address);
 	    if(isset($address[1])){
-	        return html_entity_decode(trim(strip_tags($address[1])),ENT_QUOTES,'UTF-8');
+	        return $address[1];
         }else{
             return null;
         }

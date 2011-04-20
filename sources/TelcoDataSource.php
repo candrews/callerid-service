@@ -166,7 +166,7 @@ class TelcoDataSource extends HTTPSource
 		    if(strlen($ratecenter) > 1)
 		    {
 			    $result = new Result();
-			    $result->name = strip_tags($body);
+			    $result->name = $this->clean_scraped_html($body);
 			    //since this source only returns a location, address and name are the same
 			    $result->address = $result->name;
 			    return $result;
