@@ -81,7 +81,7 @@ if(empty($thenumber_orig)){
             $source->$key = $value;
         }
         $source->thenumber = $thenumber;
-        if($source->is_applicable()){
+        if($source->prepare()){
             if($source instanceof HTTP_Source){
                 $http_sources[$source_index]=$source;
             }else{
@@ -192,10 +192,10 @@ if(empty($thenumber_orig)){
     if($winning_result === false){
         header("HTTP/1.0 404 Not Found");
         if($format == 'basic') {
-            echo 'Unknown';
+            echo 'Unknown number';
         } else if($format == 'json') {
             $result = new stdClass();
-            $result->error = 'Unknown';
+            $result->error = 'Unknown number';
             echo json_encode($result);
         }
     }else{

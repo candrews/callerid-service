@@ -15,49 +15,10 @@ class HittaSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://www.hitta.se - This listing includes data from the Swedish Hitta.se directory.";
 
-	function is_applicable()
+	function prepare()
 	{
-	    $number_error = false;
-	    //check for the correct digits for Sweden in international format.
-	    // international dialing prefix + country code + number
-	    if (strlen($this->thenumber) > 8)
-	    {
-		    if (substr($this->thenumber,0,2) == '46')
-		    {
-			    $this->thenumber = '0'.substr($this->thenumber, 2);
-		    }
-		    else
-		    {
-			    if (substr($this->thenumber,0,4) == '0046')
-			    {
-				    $this->thenumber = '0'.substr($this->thenumber, 4);
-			    }
-			    else
-			    {
-				    if (substr($this->thenumber,0,5) == '01146')
-				    {
-					    $this->thenumber = '0'.substr($this->thenumber,5);
-				    }			
-				    else
-				    {
-					    $number_error = true;
-				    }
-			    }
-		    }
-	    }	
-	    // number
-          if(strlen($this->thenumber) < 11)
-	    {
-		    if (substr($this->thenumber,0,1) == '0')
-		    {
-			    $number_error = false;
-		    }
-		    else
-		    {
-			    $number_error = true;
-		    }
-	    }
-	    return !$number_error;
+	    $this->thenumber = $this->clean_se_number($this->thenumber);
+	    return $this->thenumber !== false;
     }
 
 	function get_curl()

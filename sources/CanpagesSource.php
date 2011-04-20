@@ -12,85 +12,11 @@ Parser courtesy the CallerID Superfecta project, from source-Google.php
 class CanpagesSource extends HTTPSource
 {
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
-    public $source_desc = "http://www.google.com - These listing include data from the Google (Residential) Phone Book.";
-
-    function is_applicable()
-    {
-	    $number_error = false;
-	    //check for the correct 11 digits NAP phone numbers in international format.
-	    // country code + number
-	    if (strlen($this->thenumber) == 11)
-	    {
-		    if (substr($this->thenumber,0,1) == 1)
-		    {
-			    $this->thenumber = substr($this->thenumber,1);
-		    }
-		    else
-		    {
-			    $number_error = true;
-		    }
-
-	    }
-	    // international dialing prefix + country code + number
-	    if (strlen($this->thenumber) > 11)
-	    {
-		    if (substr($this->thenumber,0,3) == '001')
-		    {
-			    $this->thenumber = substr($this->thenumber, 3);
-		    }
-		    else
-		    {
-			    if (substr($this->thenumber,0,4) == '0111')
-			    {
-				    $this->thenumber = substr($this->thenumber,4);
-			    }			
-			    else
-			    {
-				    $number_error = true;
-			    }
-		    }
-
-	    }	
-	    // number
-          if(strlen($this->thenumber) < 10)
-	    {
-		    $number_error = true;
-
-	    }
-
-	    if(!$number_error)
-	    {
-		    $npa = substr($this->thenumber,0,3);
-		    $nxx = substr($this->thenumber,3,3);
-		    $station = substr($this->thenumber,6,4);
-		
-		    // Check for Toll-Free numbers
-		    $TFnpa = false;
-		    if($npa=='800'||$npa=='866'||$npa=='877'||$npa=='888')
-		    {
-			    $TFnpa = true;
-		    }
-		
-		    // Check for valid CAN NPA
-		    $npalistCAN = array(
-			    "204", "226", "249", "250", "289", "306", "343", "403", "416", "418", "438", "450",
-			    "506", "514", "519", "365", "581", "587", "579", "604", "613", "647", "705", "709",
-			    "778", "780", "807", "819", "867", "873", "902", "905",
-			    "800", "866", "877", "888"
-		      );
-		
-		    $validnpaCAN = false;
-		    if(in_array($npa, $npalistCAN))
-		    {
-			    $validnpaCAN = true;
-		    }
-	
-		    if(!$TFnpa && !$validnpaCAN)
-		    {
-			    $number_error = true;
-		    }
-	    }
-	    return !$number_error;
+    public $source_desc = "http://www.canpages.ca - These listings will return both residential and business Canadian listings as well as (at least some) American business and residential listings.";
+    
+    function prepare(){
+	    $this->thenumber = $this->clean_uscan_number($this->thenumber);
+	    return $this->thenumber !== false;
     }
 	
 	function get_curl(){
@@ -136,7 +62,6 @@ class CanpagesSource extends HTTPSource
                 //couldn't find a name... have to return failure
                 return false;
             }else{
-die(print_r($result,1));
 		        return $result;
 		    }
 	    }else{
