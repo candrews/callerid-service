@@ -207,6 +207,12 @@ abstract class Source
             case 10:
 	            $pattern = '/(0\d{9})/';
                 break;
+            case 14:
+	            $pattern = '/0061(0\d{9})/';
+                break;
+            case 15:
+	            $pattern = '/01161(0\d{9})/';
+                break;
             default:
                 return false;
         }
