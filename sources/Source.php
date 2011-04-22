@@ -197,5 +197,24 @@ abstract class Source
 		    return false;
 	    }
     }
+    
+    /**
+     * given a phone number in any format (with any punctuation), return the phone number, with leading 0 as dialed in Australia (or false if the number is not valid)
+     */
+    function clean_au_number($number){
+        $number = preg_replace('/[\D]/','',$number);
+        switch(strlen($number)){
+            case 10:
+	            $pattern = '/(0\d{9})/';
+                break;
+            default:
+                return false;
+        }
+	    if(preg_match($pattern, $number, $matches)){
+	        return $matches[1];
+	    }else{
+	        return false;
+        }
+    }
 }
 
