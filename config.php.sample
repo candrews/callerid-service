@@ -26,6 +26,7 @@ $config['sources'][]=
 //if a source doesn't take any parameters, simply give the source's name.
 $config['sources'][]='YellowPages';
 $config['sources'][]='Google';
+$config['sources'][]='LocalTel';
 $config['sources'][]='Addresses';
 $config['sources'][]='WhitePages';
 $config['sources'][]='WhitePagesCanada';

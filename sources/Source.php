@@ -225,5 +225,33 @@ abstract class Source
 	        return false;
         }
     }
+
+    /**
+     * given a phone number in any format (with any punctuation), return the phone number, with leading 0 as dialed in Switzerland (or false if the number is not valid)
+     */
+    function clean_ch_number($number){
+        $number = preg_replace('/[\D]/','',$number);
+        switch(strlen($number)){
+            case 10:
+	            $pattern = '/(0\d{9})/';
+	            $addtrunk = false;
+                break;
+            case 13:
+	            $pattern = '/0041(\d{9})/';
+	            $addtrunk = true;
+                break;
+            case 14:
+	            $pattern = '/01141(\d{9})/';
+	            $addtrunk = true;
+                break;
+            default:
+                return false;
+        }
+	    if(preg_match($pattern, $number, $matches)){
+	        return ($addtrunk?'0':'') . $matches[1];
+	    }else{
+	        return false;
+        }
+    }
 }
 
