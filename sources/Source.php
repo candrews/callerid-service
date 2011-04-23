@@ -206,18 +206,21 @@ abstract class Source
         switch(strlen($number)){
             case 10:
 	            $pattern = '/(0\d{9})/';
+	            $addtrunk = false;
+                break;
+            case 13:
+	            $pattern = '/0061(\d{9})/';
+	            $addtrunk = true;
                 break;
             case 14:
-	            $pattern = '/0061(0\d{9})/';
-                break;
-            case 15:
-	            $pattern = '/01161(0\d{9})/';
+	            $pattern = '/01161(\d{9})/';
+	            $addtrunk = true;
                 break;
             default:
                 return false;
         }
 	    if(preg_match($pattern, $number, $matches)){
-	        return $matches[1];
+	        return ($addtrunk?'0':'') . $matches[1];
 	    }else{
 	        return false;
         }
