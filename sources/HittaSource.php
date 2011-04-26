@@ -15,10 +15,17 @@ class HittaSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://www.hitta.se - This listing includes data from the Swedish Hitta.se directory.";
 
-	function prepare()
-	{
-	    $this->thenumber = $this->clean_se_number($this->thenumber);
-	    return $this->thenumber !== false;
+    public $countries = array('se');
+    
+    function prepare()
+    {
+        if(parent::prepare()){
+            //hitta.se wants the number in local format, not in international format
+            $this->thenumber = '0'.substr($this->thenumber,3);
+            return true;
+        }else{
+            return false;
+        }
     }
 
 	function get_curl()

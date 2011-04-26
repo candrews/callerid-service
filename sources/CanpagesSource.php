@@ -14,10 +14,7 @@ class CanpagesSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://www.canpages.ca - These listings will return both residential and business Canadian listings as well as (at least some) American business and residential listings.";
     
-    function prepare(){
-	    $this->thenumber = $this->clean_uscan_number($this->thenumber);
-	    return $this->thenumber !== false;
-    }
+    public $countries = array('us', 'ca');
 	
 	function get_curl(){
 	    return $this->curl_helper('http://www.canpages.ca/rl/index.jsp?fi=Search&lang=0&val=' . $this->thenumber);

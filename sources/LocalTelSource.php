@@ -15,11 +15,7 @@ class LocalTelSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://local.ch - These listings include business and residential data for Switzerland.";
 
-	function prepare()
-	{
-	    $this->thenumber = $this->clean_ch_number($this->thenumber);
-	    return $this->thenumber !== false;
-    }
+    public $countries = array('ch');
 
 	function get_curl()
 	{
@@ -35,7 +31,7 @@ class LocalTelSource extends HTTPSource
 	        if(preg_match($pattern, $body, $match)){
 		        $result = new Result();
 		        $result->name = $this->clean_scraped_html($match[1]);
-		        if(isset($match[2])) $result->address = $this->clean_scraped_html($match[2]);
+		        $result->address = $this->clean_scraped_html($match[2]);
 		        if(empty($result->name)){
 		            return false;
 	            }else{

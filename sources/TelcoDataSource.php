@@ -14,10 +14,7 @@ class TelcoDataSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://www.telcodata.us/ - Provides data for the US and some Canadian locations.<br>These listings generally return only the geographic location of the caller, not a name.<br>Because the data provided is less specific than other sources, this data source is usualy configured near the bottom of the list of active data sources.";
 
-    function prepare(){
-	    $this->thenumber = $this->clean_uscan_number($this->thenumber);
-	    return $this->thenumber !== false;
-    }
+    public $countries = array('us', 'ca');
 	
 	function get_curl()
 	{

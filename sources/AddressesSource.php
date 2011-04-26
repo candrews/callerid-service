@@ -14,14 +14,11 @@ class AddressesSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://phonenumbers.addresses.com - This will return only residential listings, business listings will not be returned.";
     
-    function prepare(){
-	    $this->thenumber = $this->clean_uscan_number($this->thenumber);
-	    return $this->thenumber !== false;
-    }
+    public $countries = array('us', 'ca');
 	
 	function get_curl()
 	{
-	    return $this->curl_helper('http://phonenumbers.addresses.com/results.php?ReportType=33&qfilter[pro]=on&qi=0&qk=10&qnpa=' . substr($this->thenumber,0,3) . '&qp='.substr($this->thenumber,3));
+	    return $this->curl_helper('http://phonenumbers.addresses.com/results.php?ReportType=33&qfilter[pro]=on&qi=0&qk=10&qnpa=' . substr($this->thenumber,2,3) . '&qp='.substr($this->thenumber,5));
 	}
 	
 	function parse_response()

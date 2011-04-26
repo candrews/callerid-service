@@ -10,6 +10,11 @@ class MySQLiDBSource extends Source
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "Query a local or remote MySQL database.";
     
+    function prepare(){
+        parent::prepare();
+        return true;
+    }
+    
     function get_configuration(){
         //configuration / display parameters
         $source_param = array();

@@ -14,10 +14,7 @@ class GoogleSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://www.google.com - These listing include data from the Google (Residential) Phone Book.";
     
-    function prepare(){
-	    $this->thenumber = $this->clean_uscan_number($this->thenumber);
-	    return $this->thenumber !== false;
-    }
+    public $countries = array('us', 'ca');
 	
 	function get_curl(){
 	    return $this->curl_helper('http://www.google.com/search?rls=en&q=phonebook:' . $this->thenumber . '&ie=UTF-8&oe=UTF-8');

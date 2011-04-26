@@ -14,10 +14,7 @@ class YellowPagesSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://yellowpages.addresses.com - This will return only business listings, it will not return residential listings.";
     
-    function prepare(){
-	    $this->thenumber = $this->clean_uscan_number($this->thenumber);
-	    return $this->thenumber !== false;
-    }
+    public $countries = array('us', 'ca');
     
     function get_curl()
     {

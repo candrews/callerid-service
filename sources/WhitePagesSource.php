@@ -15,10 +15,7 @@ class WhitePagesSource extends HTTPSource
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://www.whitepages.com - These listings will return both residential and business listings. Some Canada data available.";
     
-    function prepare(){
-	    $this->thenumber = $this->clean_uscan_number($this->thenumber);
-	    return $this->thenumber !== false;
-    }
+    public $countries = array('us', 'ca');
 	
 	function get_curl()
 	{

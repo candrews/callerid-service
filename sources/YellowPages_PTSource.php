@@ -5,20 +5,16 @@ if (!defined('CALLERID')) {
     exit(1);
 }
 
-/*
-Parser courtesy the CallerID Superfecta project, from source-Personlookup_AU.php
-*/
-
-class PersonLookupSource extends HTTPSource
+class YellowPages_PTSource extends HTTPSource
 {
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
-    public $source_desc = "http://personlookup.com.au - These listings include residential data for AU.";
+    public $source_desc = "http://yellowpages.pt - These listings include residential and business data for PT.";
 
-    public $countries = array('au');
+    public $countries = array('pt');
 
 	function get_curl()
 	{
-	    return $this->curl_helper('http://personlookup.com.au/browse.aspx?t=search&state=all&s=number&value=' . $this->thenumber);
+	    return $this->curl_helper('http://www.white.yellowpages.pt/q/name/who/' . substr($this->thenumber,4) . '/1/');
 	}
 
 	function parse_response()
@@ -27,6 +23,8 @@ class PersonLookupSource extends HTTPSource
             $body = $this->response->body;
             
 	        $pattern = '/<div class="result">.*?<div class=\"col\">(.+?)<\/div>\s*(?:<div class=\"col\">(.+?)<\/div>)?/si';
+	        
+	        $pattern = '/<span id=\"listingbase1\" class=\"result-title-link result-bn\">(.+?)<\/span>.*?<div class=\"result-address\">(.+?)<\/div>/si';
 	        if(preg_match($pattern, $body, $match)){
 		        $result = new Result();
 		        $result->name = $this->clean_scraped_html($match[1]);
