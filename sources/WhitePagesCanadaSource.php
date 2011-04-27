@@ -17,7 +17,7 @@ class WhitePagesCanadaSource extends WhitePagesSource
     
 	function get_curl()
 	{
-		return $this->curl_helper('http://www.whitepages.ca/search/ReversePhone?full_phone=' . $this->thenumber);
+		return $this->curl_helper('http://www.whitepages.ca/search/ReversePhone?full_phone=' . urlencode($this->thenumber));
 	}
 }
 

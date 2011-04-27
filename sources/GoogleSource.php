@@ -17,7 +17,7 @@ class GoogleSource extends HTTPSource
     public $countries = array('us', 'ca');
 	
 	function get_curl(){
-	    return $this->curl_helper('http://www.google.com/search?rls=en&q=phonebook:' . $this->thenumber . '&ie=UTF-8&oe=UTF-8');
+	    return $this->curl_helper('http://www.google.com/search?rls=en&q=phonebook:' . urlencode($this->thenumber) . '&ie=UTF-8&oe=UTF-8');
 	}
 	
 	function parse_response(){

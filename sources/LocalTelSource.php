@@ -19,7 +19,7 @@ class LocalTelSource extends HTTPSource
 
 	function get_curl()
 	{
-	    return $this->curl_helper('http://tel.search.ch/index.en.html?was=' . $this->thenumber);
+	    return $this->curl_helper('http://tel.search.ch/index.en.html?was=' . urlencode($this->thenumber));
 	}
 
 	function parse_response()

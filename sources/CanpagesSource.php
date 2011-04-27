@@ -17,7 +17,7 @@ class CanpagesSource extends HTTPSource
     public $countries = array('us', 'ca');
 	
 	function get_curl(){
-	    return $this->curl_helper('http://www.canpages.ca/rl/index.jsp?fi=Search&lang=0&val=' . $this->thenumber);
+	    return $this->curl_helper('http://www.canpages.ca/rl/index.jsp?fi=Search&lang=0&val=' . urlencode($this->thenumber));
 	}
 	
 	function parse_response(){

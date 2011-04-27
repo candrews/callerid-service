@@ -18,7 +18,7 @@ class YellowPagesSource extends HTTPSource
     
     function get_curl()
     {
-        return $this->curl_helper('http://yellowpages.addresses.com/yellow-pages/phone:' . $this->thenumber . '/listings.html');
+        return $this->curl_helper('http://yellowpages.addresses.com/yellow-pages/phone:' . urlencode($this->thenumber) . '/listings.html');
     }
 
     function parse_response()

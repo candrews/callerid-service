@@ -19,7 +19,7 @@ class WhitePagesSource extends HTTPSource
 	
 	function get_curl()
 	{
-		return $this->curl_helper('http://www.whitepages.com/search/ReversePhone?full_phone=' . $this->thenumber);
+		return $this->curl_helper('http://www.whitepages.com/search/ReversePhone?full_phone=' . urlencode($this->thenumber));
 	}
 	function parse_response()
 	{

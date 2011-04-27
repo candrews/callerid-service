@@ -34,5 +34,6 @@ $config['sources'][]='PersonLookup';
 $config['sources'][]='Canpages';
 $config['sources'][]='Hitta';
 $config['sources'][]='YellowPages_PT';
+$config['sources'][]='Infobel';
 $config['sources'][]='TelcoData';
 

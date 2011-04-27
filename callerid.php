@@ -69,7 +69,7 @@ if(empty($thenumber_orig)){
     //set config defaults
     $config['include_source_in_result']=true;
     $config['number_cleaners'] = array(
-        'au', 'ch', 'nanp', 'se', 'pt'
+        'au', 'ch', 'nanp', 'se', 'pt', 'be', 'fr', 'lu', 'dk', 'at', 'it', 'de'
     );
 
     require_once('config.php');

@@ -18,7 +18,7 @@ class PersonLookupSource extends HTTPSource
 
 	function get_curl()
 	{
-	    return $this->curl_helper('http://personlookup.com.au/browse.aspx?t=search&state=all&s=number&value=' . $this->thenumber);
+	    return $this->curl_helper('http://personlookup.com.au/browse.aspx?t=search&state=all&s=number&value=' . urlencode($this->thenumber));
 	}
 
 	function parse_response()

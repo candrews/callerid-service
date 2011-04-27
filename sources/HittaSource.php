@@ -30,7 +30,7 @@ class HittaSource extends HTTPSource
 
 	function get_curl()
 	{
-	    return $this->curl_helper('http://wap.hitta.se/default.aspx?Who=' . $this->thenumber);
+	    return $this->curl_helper('http://wap.hitta.se/default.aspx?Who=' . urlencode($this->thenumber));
 	}
 
 	function parse_response()
