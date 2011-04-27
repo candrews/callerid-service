@@ -18,7 +18,7 @@ class TelcoDataSource extends HTTPSource
 	
 	function get_curl()
 	{
-	    return $this->curl_helper('http://www.telcodata.us/query/queryexchangexml.html?npa=' . substr($this->thenumber,0,3) . '&nxx='.substr($this->thenumber,3,3));
+	    return $this->curl_helper('http://www.telcodata.us/query/queryexchangexml.html?npa=' . substr($this->thenumber,2,3) . '&nxx='.substr($this->thenumber,5,3));
 	}
 	
 	function parse_response()
