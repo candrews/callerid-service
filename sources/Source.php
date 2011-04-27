@@ -41,11 +41,22 @@ abstract class Source
             return null;
         else
             $ret = trim(preg_replace('/\s+/',' ',html_entity_decode(strip_tags($html),ENT_QUOTES,'UTF-8')));
+            $ret = $this->convert_to_utf8($ret);
             if(empty($ret)){
                 return null;
             }else{
                 return $ret;
             }
+    }
+
+    function convert_to_utf8($content) {
+        //from http://www.php.net/manual/en/function.utf8-encode.php#102382
+        if(!mb_check_encoding($content, 'UTF-8')
+            OR !($content === mb_convert_encoding(mb_convert_encoding($content, 'UTF-32', 'UTF-8' ), 'UTF-8', 'UTF-32'))) {
+
+            $content = mb_convert_encoding($content, 'UTF-8');
+        }
+        return $content;
     }
 }
 
