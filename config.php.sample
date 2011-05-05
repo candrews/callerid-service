@@ -37,3 +37,11 @@ $config['sources'][]='YellowPages_PT';
 $config['sources'][]='Infobel';
 $config['sources'][]='TelcoData';
 
+//uncomment these lines to enable memcache
+/*
+addPlugin('Memcache', array(
+    'servers' => array('127.0.0.1;11211'),
+    'persistent' => true
+));
+/*
+
