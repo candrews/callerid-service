@@ -36,6 +36,7 @@ $config['sources'][]='Hitta';
 $config['sources'][]='YellowPages_PT';
 $config['sources'][]='Infobel';
 $config['sources'][]='TelcoData';
+$config['sources'][]='Country';
 
 //uncomment these lines to enable memcache
 /*
