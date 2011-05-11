@@ -47,6 +47,7 @@ abstract class HTTPSource extends Source
 	    curl_setopt($crl,CURLOPT_USERAGENT,$useragent);
 	    curl_setopt($crl,CURLOPT_URL,$url);
 	    curl_setopt($crl,CURLOPT_RETURNTRANSFER,true);
+	    curl_setopt($crl,CURLOPT_FOLLOWLOCATION,true);
 	    //curl_setopt($crl,CURLOPT_CONNECTTIMEOUT,$curl_timeout);
 	    curl_setopt($crl,CURLOPT_FAILONERROR,true);
 	    //curl_setopt($crl,CURLOPT_TIMEOUT,$curl_timeout);
