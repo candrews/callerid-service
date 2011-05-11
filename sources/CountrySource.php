@@ -41,6 +41,9 @@ class CountrySource extends Source
 	        case 'dk':
 	            $long_country = 'Denmark';
 	            break;
+	        case 'fi':
+	            $long_country = 'Finland';
+	            break;
 	        case 'fr':
 	            $long_country = 'France';
 	            break;
@@ -55,6 +58,9 @@ class CountrySource extends Source
 	            break;
 	        case 'se':
 	            $long_country = 'Sweden';
+	            break;
+	        case 'uk':
+	            $long_country = 'United Kingdom';
 	            break;
 	        case 'us':
 	            $long_country = 'United States';
