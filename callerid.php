@@ -57,7 +57,7 @@ function __autoload($class_name) {
     }else if(endswith($class_name,'Source') && file_exists(INSTALLDIR . "/sources/$class_name.php")){
         require_once(INSTALLDIR . "/sources/$class_name.php");
     }else if(file_exists(INSTALLDIR . "/lib/$class_name.php")){
-            require_once(INSTALLDIR . "/lib/$class_name.php");
+        require_once(INSTALLDIR . "/lib/$class_name.php");
     }else{
         Event::handle('Autoload', array(&$class_name));
     }
