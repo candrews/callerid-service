@@ -69,10 +69,10 @@ function __autoload($class_name) {
         Event::handle('Autoload', array(&$class_name));
     }
 }
-$thenumber_orig = $_GET['num'];
+$thenumber_orig = isset($_GET['num'])?$_GET['num']:null;
 
 //The lookup agent can (and should, for best results) specifiy which country it is in.
-$agent_country = $_GET['country'];
+$agent_country = isset($_GET['country'])?$_GET['country']:null;
 if(!empty($agent_country)) $agent_country = strtolower($agent_country);
 
 if(empty($thenumber_orig)){
