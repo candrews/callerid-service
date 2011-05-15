@@ -10,9 +10,9 @@ class DeNumberCleaner extends NumberCleaner
     public $international_calling_prefix = '00';
     
     function clean_number($number){
-	    if(preg_match('/^(\d{3,12})$/', $number, $matches)){
+	    if(preg_match('/^(0\d{2,11})$/', $number, $matches)){
 	        return array('number' => '+49' . $matches[1], 'country' => 'de');
-	    }else if(preg_match('/^\+49(\d{3,12})$/', $number, $matches)){
+	    }else if(preg_match('/^\+49(\d{2,11})$/', $number, $matches)){
 	        return array('number' => '+49' . $matches[1], 'country' => 'de');
         }else{
 	        return false;
