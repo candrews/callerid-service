@@ -7,6 +7,8 @@ if (!defined('CALLERID')) {
 
 class ItNumberCleaner extends NumberCleaner
 {
+    public $international_calling_prefix = '00';
+    
     function clean_number($number){
         switch(strlen($number)){
             case 11:

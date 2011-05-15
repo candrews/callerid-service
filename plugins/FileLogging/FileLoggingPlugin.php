@@ -9,9 +9,9 @@ class FileLoggingPlugin extends Plugin
 {
     public $path = 'callerid.log';
 
-    function onAfterLookup($thenumber_orig, $thenumber, $country, &$winning_result){
+    function onAfterLookup($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result){
         $fh = fopen($this->path, 'a');
-        fwrite($fh, "$thenumber_orig $thenumber $winning_result->name" . "\n");
+        fwrite($fh, "($agent_country) $thenumber_orig $thenumber $winning_result->name" . "\n");
         fclose($fh);
         return true;
     }

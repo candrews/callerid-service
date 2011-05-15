@@ -7,6 +7,8 @@ if (!defined('CALLERID')) {
 
 class AtNumberCleaner extends NumberCleaner
 {
+    public $international_calling_prefix = '00';
+    
     function clean_number($number){
 	    if(preg_match('/^0(\d{4,16})$/', $number, $matches)){
 	        return array('number' => '+43' . $matches[1], 'country' => 'at');

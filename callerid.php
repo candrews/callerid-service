@@ -51,6 +51,13 @@ function endswith($string, $test) {
     return substr_compare($string, $test, -$testlen) === 0;
 }
 
+function startsWith($haystack, $needle)
+{
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+
+
 function __autoload($class_name) {
     if(endswith($class_name,'NumberCleaner') && $class_name!='NumberCleaner' && file_exists(INSTALLDIR . '/number_cleaners/' . strtolower(substr($class_name,0,-13)) .'.php')){
         require_once(INSTALLDIR . '/number_cleaners/' . strtolower(substr($class_name,0,-13)) .'.php');
@@ -63,6 +70,10 @@ function __autoload($class_name) {
     }
 }
 $thenumber_orig = $_GET['num'];
+
+//The lookup agent can (and should, for best results) specifiy which country it is in.
+$agent_country = $_GET['country'];
+if(!empty($agent_country)) $agent_country = strtolower($agent_country);
 
 if(empty($thenumber_orig)){
     header("HTTP/1.0 500 Internal server error");
@@ -114,10 +125,16 @@ if(empty($thenumber_orig)){
     //set config defaults
     $config['include_source_in_result']=true;
     $config['number_cleaners'] = array(
-        'au', 'ch', 'nanp', 'se', 'pt', 'be', 'fr', 'lu', 'dk', 'at', 'it', 'de', 'uk', 'fi'
+        'au', 'at', 'be', 'ca', 'ch', 'de', 'dk', 'fi', 'fr', 'it', 'lu', 'pt', 'se', 'uk', 'us'
     );
 
     require_once('config.php');
+    
+    //check if the agent_country is one of the countries we wish to support
+    if(!empty($agent_country) && in_array($agent_country,$config['number_cleaners'])){
+        //add the agent_country to the beginning of the list so it is checked first
+        array_unshift($config['number_cleaners'],$agent_country);
+    }
     
     $winning_result = false;
     $non_http_winning_result = false;
@@ -125,10 +142,18 @@ if(empty($thenumber_orig)){
     $http_sources = array();
     
     $country = false;
-    if(Event::handle('CleanNumber', array($thenumber_orig, $thenumber, &$number_cleaner_result))){
+    if(Event::handle('CleanNumber', array($thenumber_orig, $thenumber, $agent_country, &$number_cleaner_result))){
         foreach($config['number_cleaners'] as $number_cleaner_name){
             $class_name = strtoupper(substr($number_cleaner_name,0,1)) . substr($number_cleaner_name,1) . 'NumberCleaner';
             $number_cleaner = new $class_name;
+            if($agent_country == $number_cleaner_name){
+                if(startsWith($thenumber,$number_cleaner->international_calling_prefix)){
+                    //The number starts with the agent country's international dialing prefix,
+                    //so this number must be in the international dialing format for that country.
+                    //Convert the number to the international "+country" format so our souces can use it
+                    $thenumber = '+' . substr($thenumber,strlen($number_cleaner->international_calling_prefix));
+                }
+            }
             $number_cleaner_result = $number_cleaner->clean_number($thenumber);
             if($number_cleaner_result !== false){
                 $thenumber = $number_cleaner_result['number'];
@@ -136,7 +161,7 @@ if(empty($thenumber_orig)){
             }
         }
     }
-    if(Event::handle('PerformLookup', array($thenumber_orig, $thenumber, $country, &$winning_result))){
+    if(Event::handle('PerformLookup', array($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result))){
         if($country !== false){
             foreach($config['sources'] as $source_index => $source_configuration)
             {
@@ -264,7 +289,7 @@ if(empty($thenumber_orig)){
             }
         }
     }
-    Event::handle('AfterLookup', array($thenumber_orig, $thenumber, $country, &$winning_result));
+    Event::handle('AfterLookup', array($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result));
 
     if($winning_result === false){
         header("HTTP/1.0 404 Not Found");

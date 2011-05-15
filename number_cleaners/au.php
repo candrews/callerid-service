@@ -7,6 +7,8 @@ if (!defined('CALLERID')) {
 
 class AuNumberCleaner extends NumberCleaner
 {
+    public $international_calling_prefix = '0011';
+    
     function clean_number($number){
         switch(strlen($number)){
             case 10:

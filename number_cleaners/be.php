@@ -7,6 +7,8 @@ if (!defined('CALLERID')) {
 
 class BeNumberCleaner extends NumberCleaner
 {
+    public $international_calling_prefix = '00';
+    
     function clean_number($number){
 	    if(preg_match('/^0([1-9]\d{7,8})$/', $number, $matches)){
 	        return array('number' => '+32' . $matches[1], 'country' => 'be');

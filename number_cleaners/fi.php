@@ -7,6 +7,8 @@ if (!defined('CALLERID')) {
 
 class FiNumberCleaner extends NumberCleaner
 {
+    public $international_calling_prefix = '00';
+    
     function clean_number($number){
 	    if(preg_match('/^0(\d{5,11})$/', $number, $matches)){
 	        return array('number' => '+358' . $matches[1], 'country' => 'fi');

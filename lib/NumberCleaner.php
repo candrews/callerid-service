@@ -8,7 +8,13 @@ if (!defined('CALLERID')) {
 abstract class NumberCleaner
 {
     /*
+     * the outgoing international call prefix (for example, 011 in the US).
+     */
+    public $international_calling_prefix = '00';
+    
+    /*
      * Return a associative array with keys 'number' and 'country', or false if the number is not valid
+     * @param $number the number to clean
      */
     abstract function clean_number($number);
 }
