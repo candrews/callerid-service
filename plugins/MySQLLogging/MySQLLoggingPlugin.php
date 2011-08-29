@@ -7,11 +7,11 @@ if (!defined('CALLERID')) {
 
 class MySQLLoggingPlugin extends Plugin
 {
-    public $SQL_Query = 'insert into log (agent_country, thenumber_orig, thenumber, country, winning_result_name, query_time) values (?, ?, ?, ?, ?, ?)';
-
-    function onPerformLookup($thenumber_orig, $thenumber, $country, $winning_result){
+    public function MySQLLoggingPlugin(){
         $this->query_start_time = microtime(true);
     }
+
+    public $SQL_Query = 'insert into log (agent_country, thenumber_orig, thenumber, country, winning_result_name, query_time) values (?, ?, ?, ?, ?, ?)';
 
     function onAfterLookup($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result){
         $link = mysqli_connect($this->DB_Host, $this->DB_User, $this->DB_Password, $this->DB_Name);
