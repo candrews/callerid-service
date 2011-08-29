@@ -7,7 +7,8 @@ if (!defined('CALLERID')) {
 
 class MySQLLoggingPlugin extends Plugin
 {
-    public function MySQLLoggingPlugin(){
+    public function __construct(){
+        parent::__construct();
         $this->query_start_time = microtime(true);
     }
 
@@ -33,6 +34,7 @@ class MySQLLoggingPlugin extends Plugin
                 error_log('Failed to prepare statement: ' . $this->SQL_Query);
             }
         }
+        return true;
     }
 
 }
