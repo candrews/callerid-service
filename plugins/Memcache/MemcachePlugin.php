@@ -17,7 +17,7 @@ class MemcachePlugin extends Plugin
 
     public $defaultExpiry = 86400; // 24h
     
-    function onPerformLookup($thenumber_orig, $thenumber, $country, &$winning_result){
+    function onPerformLookup($thenumber_orig, $thenumber, $country, $winning_result){
         $this->_ensureConn();
         $value = $this->_conn->get($thenumber);
         if($value===false){
@@ -28,7 +28,7 @@ class MemcachePlugin extends Plugin
         }
     }
 
-    function onAfterLookup($thenumber_orig,$thenumber, $country, &$winning_result){
+    function onAfterLookup($thenumber_orig,$thenumber, $country, $winning_result){
         $this->_ensureConn();
         $this->_conn->set($thenumber, $winning_result);
         return true;
