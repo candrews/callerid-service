@@ -181,7 +181,7 @@ if(empty($thenumber_orig)){
                 $source->thenumber = $thenumber;
                 $source->country = $country;
                 if($source->prepare()){
-                    if($source instanceof HTTP_Source){
+                    if($source instanceof HTTPSource){
                         $http_sources[$source_index]=$source;
                     }else{
                         $result = $source->lookup();
@@ -193,9 +193,8 @@ if(empty($thenumber_orig)){
                     }
                 }
             }
-            
             if($http_sources){
-                //there are HTTP_Sources to be considered
+                //there are HTTPSource's to be considered
                 $mh = curl_multi_init();
                 $ch = array();
                 foreach($http_sources as $i=>$source){
