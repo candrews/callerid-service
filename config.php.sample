@@ -34,6 +34,7 @@ $config['sources'][]='PersonLookup';
 $config['sources'][]='Canpages';
 $config['sources'][]='Hitta';
 $config['sources'][]='YellowPages_PT';
+$config['sources'][]='PagineBianche';
 $config['sources'][]='Infobel';
 $config['sources'][]='Fonecta';
 $config['sources'][]='UkPhoneInfo';
