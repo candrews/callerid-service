@@ -56,6 +56,9 @@ class CountrySource extends Source
 	        case 'lu':
 	            $long_country = 'Luxembourg';
 	            break;
+	        case 'nl':
+	            $long_country = 'Netherlands';
+	            break;
 	        case 'pt':
 	            $long_country = 'Portugal';
 	            break;
