@@ -93,6 +93,9 @@ if(empty($thenumber_orig)){
         $format = $format_orig;
     }
 
+    //cache for 1 day
+    header('Expires: ' . gmdate('D, d M Y H:i:s', time()+24*60*60) . ' GMT');
+
     switch($format){
         case 'json':
             header('Content-type: application/javascript');
