@@ -1,4 +1,5 @@
-The CallerID service provides CallerID information given a phone number. Currently, it can access data for the US and (some data in) Canada. Contributions for other countries/sources are welcome!
+The CallerID service provides CallerID information given a phone number. Currently, it can access data quite a few countries. 
+Contributions for other countries/sources are welcome!
 
 Installation is simple - extract the archive, copy config.php.sample to config.php and modify config.php as desired.
 

@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <title>CallerID</title>
+    </head>
+    <body>
+        <form>
+            <p>
+                Enter a phone number to lookup.
+                Enter the phone number as you would from a regular telephone / cell phone. You can select the country you're in, or the service will take a best guess.
+                You can also enter the phone number using international dialing rules (+country code).
+            </p>
+            <label for="country">Country you're in</label>
+            <select name="country" id="country">
+                <option value="au">Australia</option>
+                <option value="at">Austria</option>
+                <option value="be">Belgium</option>
+                <option value="ca">Canada</option>
+                <option value="dk">Denmark</option>
+                <option value="fi">Finland</option>
+                <option value="fr">France</option>
+                <option value="de">Germany</option>
+                <option value="in">India</option>
+                <option value="it">Italy</option>
+                <option value="lu">Luxembourg</option>
+                <option value="nl">Netherlands</option>
+                <option value="pt">Portugal</option>
+                <option value="se">Sweden</option>
+                <option value="ch">Switzerland</option>
+                <option value="uk">United Kingdom</option>
+                <option value="us" selected>United States</option>
+            </select><br />
+            <label for="inputPhoneNumber">Phone Number: </label> <input type="tel" id="inputPhoneNumber" name="inputPhoneNumber" />
+            <input type="button" value="Lookup" id="lookup" /><img id="spinner" src="img/spinner.gif" style="display:none; border: 0" alt="please wait..." />
+        </form>
+        <div id="result" style="display: none">
+            <div id="name"></div>
+            <div id="company"></div>
+            <div id="address"></div>
+            <div id="phoneNumber"></div>
+        </div>
+        <div id="error" style="display: none">
+        </div>
+        <p>This service can currently get information about phone numbers in these countries:</p>
+        <ul>
+            <li>Australia</li>
+            <li>Austria</li>
+            <li>Belgium</li>
+            <li>Canada</li>
+            <li>Denmark</li>
+            <li>Finland</li>
+            <li>France</li>
+            <li>Germany</li>
+            <li>Italy</li>
+            <li>Luxembourg</li>
+            <li>Portugal</li>
+            <li>Sweden</li>
+            <li>Switzerland</li>
+            <li>United Kingdom (only geographical info)</li>
+            <li>United States</li>
+        </ul>
+        <p>This software is Free and Open Source Software under the terms of the <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPLv3</a> license. Checkout the <a href="README">readme</a> or <a href="https://gitorious.org/callerid-service">grab the source</a> for more information.</p>
+        <p><a href="http://www.integralblue.com/callerid-for-android">Check out the Android app!</a></p>
+        <script src="js/jquery-1.7.min.js"></script>
+        <script>
+             var displayableProperties = ["name"];
+             $(document).ready(function() {
+                $('#lookup').click(function(){
+                    $('#result').hide();
+                    $('#spinner').show();
+                    var inputPhoneNumber = $('#inputPhoneNumber').val();
+                    $.ajax({
+                        url: "callerid.php",
+                        data: { format: "json", country: $('#country').val(), num: inputPhoneNumber },
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#name').text(data.name);
+                            $('#company').text(data.name == data.company ? '' : data.company);
+                            $('#address').text(data.name == data.address ? '' : data.address);
+                            $('#phoneNumber').text(data.phoneNumber);
+                            $('#result').fadeIn('fast');
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            $('#error').text(textStatus).fadeIn('fast');
+                        },
+                        complete: function(){
+                            $('#spinner').hide();
+                        }
+                    });
+                });
+             });
+        </script>
+    </body>
+</html>
+
