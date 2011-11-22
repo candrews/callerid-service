@@ -26,10 +26,10 @@ class TelcoDataSource extends HTTPSource
         if($this->response->code == 200){
             $body = $this->response->body;
 		    
-		    $start = strpos($body, "<ratecenter>");
-		    $ratecenter = substr($body,$start+12);
-		    $end = strpos($ratecenter, "</ratecenter>");
-		    $ratecenter = substr($ratecenter,0,$end);
+		    $start = strpos($body, "<englishname>");
+		    $englishname = substr($body,$start+13);
+		    $end = strpos($englishname, "</englishname>");
+		    $englishname = substr($englishname,0,$end);
 		    
 		    //$start2 = strpos($body, "<company>");
 		    //$result3 = substr($body,$start2+9);
@@ -41,9 +41,9 @@ class TelcoDataSource extends HTTPSource
 		    $end = strpos($state, "</state>");
 		    $state = substr($state,0,$end);
 		    
-		    $body = $ratecenter.", ".$state ;
+		    $body = $englishname.", ".$state ;
 		    
-		    if(strlen($ratecenter) > 1)
+		    if(strlen($englishname) > 1)
 		    {
 			    $result = new Result();
 			    $result->name = $this->clean_scraped_html($body);
