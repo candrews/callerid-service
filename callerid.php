@@ -2,6 +2,8 @@
 define('CALLERID',true);
 define('INSTALLDIR', dirname(__FILE__));
 
+$latestAndroidVersionCode = 4;
+
 /**
  * Configure and instantiate a plugin into the current configuration.
  * Class definitions will be loaded from standard paths if necessary.
@@ -296,6 +298,7 @@ if(empty($thenumber_orig)){
             echo 'Unknown number';
         } else if($format == 'json') {
             $result = new stdClass();
+            if(isset($latestAndroidVersionCode)) $result->latestAndroidVersionCode = $latestAndroidVersionCode;
             $result->error = 'Unknown number';
             echo json_encode($result);
         }
@@ -304,7 +307,8 @@ if(empty($thenumber_orig)){
         if($format == 'basic') {
             echo $winning_result->name;
         } else if($format == 'json') {
-             echo json_encode($winning_result);
+            if(isset($latestAndroidVersionCode)) $winning_result->latestAndroidVersionCode = $latestAndroidVersionCode;
+            echo json_encode($winning_result);
         }
     }
 }
