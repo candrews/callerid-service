@@ -242,7 +242,7 @@ if(empty($thenumber_orig)){
                                             $winning_index = $i;
                                         }
                                     } else {
-                                        error_log("Curl error on handle $i: $curlError");
+                                        error_log("Curl error on handle $i. Source: " . get_class($source) . ": $curlError");
                                     }
                                 }
                                 // Remove and close the handle
