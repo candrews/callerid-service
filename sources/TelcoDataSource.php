@@ -30,6 +30,13 @@ class TelcoDataSource extends HTTPSource
 		    $englishname = substr($body,$start+13);
 		    $end = strpos($englishname, "</englishname>");
 		    $englishname = substr($englishname,0,$end);
+
+		    if(! $englishname){
+			 $start = strpos($body, "<ratecenter>");
+			 $englishname = substr($body,$start+12);
+			 $end = strpos($englishname, "</ratecenter>");
+			 $englishname = substr($englishname,0,$end);
+		   }
 		    
 		    //$start2 = strpos($body, "<company>");
 		    //$result3 = substr($body,$start2+9);
