@@ -37,6 +37,10 @@ abstract class HTTPSource extends Source
     function curl_helper($url,$post_data=false,$referrer=false,$cookie_file=false,$useragent=false)
     {
     	$crl = curl_init();
+    	    if(isset($this->proxy)){
+    	            curl_setopt($crl, CURLOPT_HTTPPROXYTUNNEL, 1);
+    	            curl_setopt($crl,CURLOPT_PROXY, $this->proxy);
+    	    }
 	    if(!$useragent){
 		    // Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6 ( .NET CLR 3.5.30729)
 		    $useragent="Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
