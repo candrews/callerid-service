@@ -35,14 +35,11 @@ class WhitePagesSource extends HTTPSource
 			    return false;
 		    }
 		    
-		    $patternFirst = "/FIRST.*?\"(.*?)\",/";
-		    $patternLast = "/LAST.*?\"(.*?)\",/";
-		    $patternAddress = "/ADDRESS_ESC.*?\"(.*?)\",/";
-		    $patternCity = "/CITY.*?\"(.*?)\",/";
-		    $patternState = "/STATE.*?\"(.*?)\",/";
-		    $patternType = "/Type: *(.*?)<\/span>/";
+		    $patternAddress = "/<span class=\"street-address\">(.*?)<\/span>/";
+		    $patternCity = "/<span class=\"locality\">(.*?)<\/span>/";
+		    $patternState = "/<span class=\"region\">(.*?)<\/span>/";
 		    $patternCompany = "/Company: <\/strong><span class=\"org\">(.*?)<\/span>/";
-		    $patternName = "/<span class=\"name\">(.*?)<\/span>/";
+		    $patternName = "/<span class=\"name fn\"><span.*?>(.*?)<\/span><\/span>/";
 		    
             preg_match($patternCompany, $body, $company);
             if(isset($company[1])){
@@ -53,28 +50,6 @@ class WhitePagesSource extends HTTPSource
 		    preg_match($patternName, $body, $namespans);
 		    if(isset($namespans[1])){
 		        $result->name = $this->clean_scraped_html($namespans[1]);
-	        }else{
-	            //now look for a first and last name
-			    preg_match($patternFirst, $body, $first);
-			    preg_match($patternLast, $body, $last);
-			    if(isset($first[1]) && isset($last[1])){
-				    $result->name = $this->clean_scraped_html($first[1].' '.$last[1]);
-			    }else{
-				    $start= strpos($body, '</strong> based in <strong>');
-				
-				    if($start > 1)
-				    {
-					    $body = substr($body,$start);
-					    $start= strpos($body, '<strong>');
-					    $body = substr($body,$start+8);
-					    $end= strpos($body, '</strong>');
-					    $name = substr($body,0,$end);
-				        $result->name = $this->clean_scraped_html($name);
-				    }
-			    }
-	        }
-	        if(empty($result->name)){
-	            $result->name = $result->company;
             }
             if(empty($result->name)){
                 //couldn't find a name... have to return failure
