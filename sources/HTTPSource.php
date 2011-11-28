@@ -61,7 +61,7 @@ abstract class HTTPSource extends Source
 	    }
 	    if($post_data){
 		    curl_setopt($crl, CURLOPT_POST, 1); // set POST method
-		    curl_setopt($crl, CURLOPT_POSTFIELDS, cisf_url_encode_array($post_data)); // add POST fields
+		    curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data); // add POST fields
 	    }
 	    return $crl;
     }
