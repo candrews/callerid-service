@@ -75,8 +75,8 @@
                         dataType: 'json',
                         success: function(data) {
                             $('#name').text(data.name);
-                            $('#company').text(data.name == data.company ? '' : data.company);
-                            $('#address').text(data.name == data.address ? '' : data.address);
+                            $('#company').text(data.name == data.company || data.company == null ? '' : data.company);
+                            $('#address').text(data.name == data.address || data.address == null ? '' : data.address);
                             $('#phoneNumber').text(data.phoneNumber);
                             $('#result').fadeIn('fast');
                         },
