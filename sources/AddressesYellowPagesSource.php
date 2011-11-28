@@ -9,7 +9,7 @@ if (!defined('CALLERID')) {
 Parser courtesy the CallerID Superfecta project, from source-Yellow_Pages.php
 */
 
-class YellowPagesSource extends HTTPSource
+class AddressesYellowPagesSource extends HTTPSource
 {
     //The description cannot contain "a" tags, but can contain limited HTML. Some HTML (like the a tags) will break the UI.
     public $source_desc = "http://yellowpages.addresses.com - This will return only business listings, it will not return residential listings.";
