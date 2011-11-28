@@ -35,18 +35,22 @@ class CitizensInfoSource extends HTTPSource
 	}
 
         function get_name($body){
-            $patternName = '/<span id=\"lblName\">(.+?) (.+?)<\/span>/sim';
+            $patternName = '/<span id=\"lblName\">(.+?)<\/span>/sim';
             preg_match($patternName, $body, $name);
-            if(isset($name[1])){
+            if(isset($name[1]) && $name[1]!='Unlisted'){
             	//names are returned in "last first" format - translate to "first last" format
-                return $name[2] . ' ' . $name[1];
+            	$space = strpos($name[1], ' ');
+            	if($space!==false){
+            		return substr($name[1],$space) . ' ' . substr($name[1],0,$space);
+            	}
+                return $name[1];
         }else{
             return null;
         }
         }
 
         function get_address($body){
-            $patternName = '/<span id=\"lblAddress\">(.+?)<\/span>.+?<span id=\"lblCity\">(.+?)<\/span>.+?<span id=\"lblState\">(.+?)<\/span>.+?<span id=\"lblZip\">(.+?)<\/span>/sim';
+            $patternName = '/<span id=\"lblAddress\">(.+?)<\/span>.+?<span id=\"lblCity\">(.+?)<\/span>.+?<span id=\"lblState\">([A-Z]{2})<\/span>.+?<span id=\"lblZip\">(\d+)<\/span>/sim';
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
                 return $name[1] . ', ' . $name[2] . ', ' . $name[3] . ' ' . $name[4];
