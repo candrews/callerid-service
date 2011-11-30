@@ -25,47 +25,22 @@ class AddressesYellowPagesSource extends HTTPSource
     {
         if($this->response->code == 200){
             $body = $this->response->body;
-
-		    $result = new Result();
-		    $result->name = $this->clean_scraped_html($this->get_name($body));
-		    if(empty($result->name)){
-		        return false;
-	        }
-		    $result->address = $this->clean_scraped_html($this->get_address($body));
-		    //for yellow pages, all results are company names, so company = name
-		    $result->company = $result->name;
-		    return $result;
+	        $pattern = '/<a class="listing_name .*?>(.*?)<\/a>.*?<div class="sml_txt">(.*?)<\/div>/sim';
+	        if(preg_match($pattern, $body, $match)){
+		        $result = new Result();
+		        $result->name = $this->clean_scraped_html($match[1]);
+		        if(isset($match[2])) $result->address = $this->clean_scraped_html(str_replace('<br>',',',$match[2]));
+		        if(empty($result->name)){
+		            return false;
+	            }else{
+	                return $result;
+                }
+            }else{
+                return false;
+            }
 	    }else{
 	        return false;
 	    }
-	}
-
-	function get_name($body){
-	    $start= strpos($body, "listing_name");
-	    if($start > 1){
-	        $body = substr($body,$start);
-	        $start= strpos($body, ">");
-	        $body = substr($body,$start+1);
-	        $end= strpos($body, "</a>");
-	        $name = substr($body,0,$end);
-	        return $name;
-        }else{
-            return null;
-        }
-	}
-
-	function get_address($body){
-	    $start= strpos($body, "sml_txt");
-	    if($start > 1){
-	        $body = substr($body,$start);
-	        $start= strpos($body, ">");
-	        $body = substr($body,$start+1);
-	        $end= strpos($body, "</div>");
-	        $name = substr($body,0,$end);
-	        return $name;
-        }else{
-            return null;
-        }
 	}
 }
 
