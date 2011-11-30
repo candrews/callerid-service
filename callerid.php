@@ -46,18 +46,7 @@ function addPlugin($name, $attrs = null)
     return true;
 }
 
-function endswith($string, $test) {
-    $strlen = strlen($string);
-    $testlen = strlen($test);
-    if ($testlen > $strlen) return false;
-    return substr_compare($string, $test, -$testlen) === 0;
-}
-
-function startsWith($haystack, $needle)
-{
-    $length = strlen($needle);
-    return (substr($haystack, 0, $length) === $needle);
-}
+require_once(INSTALLDIR . '/lib/StringFunctions.php');
 
 
 function __autoload($class_name) {
