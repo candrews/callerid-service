@@ -46,8 +46,7 @@ class InfobelSource extends HTTPSource
 	{
         if($this->response->code == 200){
             $body = $this->response->body;
-            
-	        $pattern = '/<div class=\"result-item\">.*?<a.*?>(.+?)<\/a>.*?<div class=\"result-box-col\">(.*?)<\/div>/si';
+	        $pattern = '/<span class="fn org">(.*?)<\/span>.*?Address : <\/span><div class="data">(.*?)<\/div>/sim';
 	        if(preg_match($pattern, $body, $match)){
 		        $result = new Result();
 		        $result->name = $this->clean_scraped_html($match[1]);
