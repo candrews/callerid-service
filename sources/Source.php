@@ -40,7 +40,7 @@ abstract class Source
         if(empty($html))
             return null;
         else
-            $ret = trim(preg_replace('/\s+/',' ',html_entity_decode(strip_tags($html),ENT_QUOTES,'UTF-8')));
+            $ret = trim(preg_replace('/[\p{Z}\s]+/m',' ',html_entity_decode(strip_tags($html),ENT_QUOTES,'UTF-8')));
             $ret = $this->convert_to_utf8($ret);
             if(empty($ret)){
                 return null;
