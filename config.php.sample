@@ -28,7 +28,6 @@ $config['sources'][]='CitizensInfo';
 $config['sources'][]='AddressesYellowPages';
 $config['sources'][]='YellowPagesPerson';
 $config['sources'][]='YellowPagesBusiness';
-$config['sources'][]='Google';
 $config['sources'][]='LocalTel';
 $config['sources'][]='Addresses';
 $config['sources'][]='WhitePages';
