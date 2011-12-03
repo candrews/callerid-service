@@ -35,23 +35,40 @@ class YellowPagesPersonSource extends HTTPSource
 	}
 
         function get_name($body){
-            $patternName = '/\<address.+?<a .+?>(.+?)<\/a>/sim';
+            //if there is just 1 result, this pattern matches
+            $patternName = '/\<h1.*?>(.+?)<\/h1>/sim';
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
                 return $name[1];
-        }else{
-            return null;
-        }
+            }else{
+                //if there are multiple results, this pattern matches the first one
+                $patternName = '/\<address.+?<a .+?>(.+?)<\/a>/sim';
+                preg_match($patternName, $body, $name);
+                if(isset($name[1])){
+                    return $name[1];
+                }else{
+                    return null;
+                }
+            }
         }
 
         function get_address($body){
+            //if there are multiple results, this pattern matches the first one
             $patternName = '/<span class=\"address\">(.+?)<\/span>/si';
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
                 return $name[1];
-        }else{
-            return null;
-        }
+            }else{
+                //if there is just 1 result, this pattern matches
+                $patternName = '/<address.*?>(.+?)<\/address>/si';
+                preg_match($patternName, $body, $name);
+                if(isset($name[1])){
+                    return $name[1];
+                }else{
+                    
+                    return null;
+                }
+            }
         }
 }
 

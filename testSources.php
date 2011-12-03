@@ -21,6 +21,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
 {
     public function provider(){
         return array(
+        /*
             array('AddressesSource', '+17817498755', 'us', 'Lynn D Donovan', '36 Myers Farm Rd, Hingham, MA 02043'),
             array('AddressesYellowPagesSource', '+18604297433', 'us', 'Willington Pizza House', 'Route 32, Willington, CT 06279'),
             array('CanpagesSource', '+15147371111', 'ca', 'Pizza Pizza', '5184 av du Parc, Montréal, QC'),
@@ -38,8 +39,10 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             array('UkPhoneInfoSource', '+442075891278', 'uk', 'London', 'London'),
             array('WhitePagesSource', '+17817498755', 'ca', 'Lynn D Donovan', 'Myers Farm Rd, Hingham, MA'),
             array('YellowPagesBusinessSource', '+18604297433', 'us', 'Willington Pizza House', 'Route 32, Willington, CT 06279'),
+            */
             array('YellowPagesPersonSource', '+17817498755', 'us', 'Lynn D Donovan', '36 Myers Farm Rd, Hingham, MA 02043'),
-            array('YellowPages_PTSource', '+351219560449', 'pt', 'Xou Pizza-Pizzaria e Churrasqueira Sociedade Lda', 'Avenida Ernest Solvay 5-lj 5, 2625-168 PÓVOA DE SANTA IRIA')
+            array('YellowPagesPersonSource', '+12016608433', 'us', 'Jae L Choi', '119 Bogerts Mill Rd, Harrington Park, NJ 07640'),
+            //array('YellowPages_PTSource', '+351219560449', 'pt', 'Xou Pizza-Pizzaria e Churrasqueira Sociedade Lda', 'Avenida Ernest Solvay 5-lj 5, 2625-168 PÓVOA DE SANTA IRIA')
         );
     }
     
