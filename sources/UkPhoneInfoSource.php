@@ -30,7 +30,7 @@ class UkPhoneInfoSource extends HTTPSource
 		        if(empty($result->name)){
 		            return false;
 	            }else{
-	                $result->name.=', UK';
+	                $result->address = $result->name;
 	                return $result;
                 }
             }else{
