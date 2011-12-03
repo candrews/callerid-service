@@ -14,7 +14,7 @@ class YellowPagesBusinessSource extends HTTPSource
     
     function get_curl()
     {
-        return $this->curl_helper('https://www.yellowpages.com/phone/?phone_search_terms=' . urlencode(substr($this->thenumber,2)));
+        return $this->curl_helper('http://www.yellowpages.com/phone/?phone_search_terms=' . urlencode(substr($this->thenumber,2)));
     }
 
     function parse_response()
@@ -47,7 +47,7 @@ class YellowPagesBusinessSource extends HTTPSource
         }
 
         function get_address($body){
-            $patternName = '/<span class=\"listing-address adr\">(.+?)<a /si';
+            $patternName = '/<span class=\"listing-address adr\">(.+?)<\/span>\s*<\/span>\s*<\/span>/si';
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
                 return $name[1];
