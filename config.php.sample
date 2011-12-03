@@ -32,7 +32,6 @@ $config['sources'][]='Google';
 $config['sources'][]='LocalTel';
 $config['sources'][]='Addresses';
 $config['sources'][]='WhitePages';
-$config['sources'][]='WhitePagesCanada';
 $config['sources'][]='PersonLookup';
 $config['sources'][]='Canpages';
 $config['sources'][]='Hitta';
