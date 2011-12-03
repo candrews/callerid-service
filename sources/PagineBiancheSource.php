@@ -32,32 +32,29 @@ class PagineBiancheSource extends HTTPSource
 			    return false;
 		    }
 		    
-		    $patternPostalCode = '/<span class=\"postal-code\">(.+?)<\/span>/si';
-		    $patternLocality = '/<span class=\"locality\">(.+?)<\/span>/si';
-		    $patternRegion = '/<span class=\"region\">\((.+?)\)<\/span>/si';
-		    $patternStreet = '/<span class=\"street-address\">.*?, (.+?)<\/span>/si';
-		    $patternStreetNumber = '/<span class=\"street-address\">(.*?), .+?<\/span>/si';
-		    
-		    $patternCompany = '/<h3 class=\"org\">(.+?)<\/h3>/si';
-		    $patternName = '/<h3 class=\"org\">(.+?)<\/h3>/si';
-		    
-            preg_match($patternCompany, $body, $company);
-            if(isset($company[1])){
-                $result->company = $this->clean_scraped_html($company[1]);
-            }
+		    $patternAddress = '/<div id="addr_1".*?>(.+?)<\/span><\/div>/si';
+		    $patternName = '/<div class=\"org fn\">(.+?)<\/div>/si';
+		    $patternCompany = '/<div class=\"org fn\">(.+?)<\/div>/si';
 		    
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
-                $result->name = $this->clean_scraped_html($name[1]);
+                $patternFirstLast = '/<strong>(.+?)<\/strong>(.+)/sim';
+                preg_match($patternFirstLast, $name[1], $firstLast);
+                if(isset($firstLast[1]) && isset($firstLast[2])){
+                    $result->name = $this->clean_scraped_html($firstLast[2] . ' ' . $firstLast[1]);
+                }else{
+                    $result->name = $this->clean_scraped_html($name[1]);
+                }
+            }else{
+                preg_match($patternCompany, $body, $company);
+                if(isset($company[1])){
+                    $result->company = $this->clean_scraped_html($company[1]);
+                }
             }
 		    
-            preg_match($patternPostalCode, $body, $postalCode);
-            preg_match($patternLocality, $body, $locality);
-            preg_match($patternRegion, $body, $region);
-            preg_match($patternStreet, $body, $street);
-            preg_match($patternStreetNumber, $body, $streetNumber);
-            if(isset($postalCode[1]) && isset($locality[1]) && isset($region[1]) && isset($street[1]) && isset($streetNumber[1])){
-                $result->address = $this->clean_scraped_html($street[1] . ' ' . $streetNumber[1] . ', ' . $postalCode[1] . ' ' . $locality[1] . ' (' . $region[1] . ')');
+            preg_match($patternAddress, $body, $address);
+            if(isset($address[1])){
+                $result->address = $this->clean_scraped_html($address[1]);
             }
 
 	        if(empty($result->name)){
