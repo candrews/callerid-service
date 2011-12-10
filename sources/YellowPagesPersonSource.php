@@ -36,7 +36,7 @@ class YellowPagesPersonSource extends HTTPSource
 
         function get_name($body){
             //if there is just 1 result, this pattern matches
-            $patternName = '/\<h1.*?>(.+?)<\/h1>/sim';
+            $patternName = '/\<h1 class=\"heading-greybox\">(.+?)<\/h1>/sim';
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
                 return $name[1];
