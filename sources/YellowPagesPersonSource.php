@@ -14,7 +14,7 @@ class YellowPagesPersonSource extends HTTPSource
     
     function get_curl()
     {
-        return $this->curl_helper('http://www.yellowpages.com/reversephonelookup?fap_terms[phone]=' . urlencode(substr($this->thenumber,2)) . '&fap_terms[searchtype]=phone');
+        return $this->curl_helper('http://www.yellowpages.com/reversephonelookup?fap_terms%5Bphone%5D=' . urlencode(substr($this->thenumber,2)) . '&fap_terms%5Bsearchtype%5D=phone');
     }
 
     function parse_response()
