@@ -16,18 +16,21 @@ abstract class HTTPSource extends Source
     function lookup(){
         $crl = $this->get_curl();
         
-    	$ret = trim(curl_exec($crl));
+    	$ret = curl_exec($crl);
 	    if(curl_error($crl))
 	    {
-		    error_log(curl_error($crl));
+		    error_log(curl_error($crl) . ' effective url: ' . curl_getinfo($crl, CURLINFO_EFFECTIVE_URL));
+		    curl_close($crl);
 		    return false;
 	    }
         
         $response = new HTTPResponse();
         $response->code = curl_getinfo($crl, CURLINFO_HTTP_CODE);
-        $response->body = curl_exec($crl);
+        $response->body = $ret;
         $this->response = $response;
-        return $this->parse_response();
+        $parsed_response = $this->parse_response();
+	    curl_close($crl);
+        return $parsed_response;
     }
     
     abstract function get_curl();
@@ -53,7 +56,6 @@ abstract class HTTPSource extends Source
 	    curl_setopt($crl,CURLOPT_RETURNTRANSFER,true);
 	    curl_setopt($crl,CURLOPT_FOLLOWLOCATION,true);
 	    //curl_setopt($crl,CURLOPT_CONNECTTIMEOUT,$curl_timeout);
-	    curl_setopt($crl,CURLOPT_FAILONERROR,true);
 	    //curl_setopt($crl,CURLOPT_TIMEOUT,$curl_timeout);
 	    if($cookie_file){
 		    curl_setopt($crl, CURLOPT_COOKIEJAR, $cookie_file);
