@@ -22,6 +22,10 @@ class UkPhoneInfoSource extends HTTPSource
         if($this->response->code == 200){
             $body = $this->response->body;
             
+            if(preg_match('/probably not valid/', $body)){
+                return false;
+            }
+            
 	        $pattern = '/<h2>(.*?)<\/h2>/si';
 	        
 	        if(preg_match($pattern, $body, $match)){
