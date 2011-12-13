@@ -66,6 +66,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
         $source->thenumber = $thenumber;
         $source->country = $country;
         $this->assertTrue($source->prepare());
+        $query_start_time = microtime(true);
         $result = $source->lookup();
         if($expectedName == null){
             $this->assertFalse($result);
@@ -74,6 +75,8 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             $this->assertEquals($expectedName, $result->name);
             $this->assertEquals($expectedAddress, $result->address);
         }
+        $query_time = (microtime(true) - $query_start_time) * 1000;
+        //error_log("$sourceName: Query time (ms): $query_time");
     }
 }
 
