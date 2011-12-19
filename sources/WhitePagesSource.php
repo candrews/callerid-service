@@ -23,65 +23,61 @@ class WhitePagesSource extends HTTPSource
 	}
 	function parse_response()
 	{
-        if($this->response->code == 200){
-	        $result = new Result();
-	        
-	        $body = $this->response->body;
-	        
-		    $notfound = strpos($body, "PHONE_USER_ERROR");
-		    $notfound = ($notfound < 1) ? strpos($body, "PHONE_NO_RESULTS") : $notfound;
-		    if($notfound)
-		    {
-			    return false;
-		    }
-		    
-		    $patternAddress = "/<span class=\"street-address\">(.*?)<\/span>/";
-		    $patternCity = "/<span class=\"locality\">(.*?)<\/span>/";
-		    $patternState = "/<span class=\"region\">(.*?)<\/span>/";
-		    $patternCompany = "/Company: <\/strong><span class=\"org\">(.*?)<\/span>/";
-		    $patternName = "/<span class=\"name fn\"><span.*?>(.*?)<\/span><\/span>/";
-		    
-            preg_match($patternCompany, $body, $company);
-            if(isset($company[1])){
-                $result->company = $this->clean_scraped_html($company[1]);
+        $result = new Result();
+        
+        $body = $this->response->body;
+        
+	    $notfound = strpos($body, "PHONE_USER_ERROR");
+	    $notfound = ($notfound < 1) ? strpos($body, "PHONE_NO_RESULTS") : $notfound;
+	    if($notfound)
+	    {
+		    return false;
+	    }
+	    
+	    $patternAddress = "/<span class=\"street-address\">(.*?)<\/span>/";
+	    $patternCity = "/<span class=\"locality\">(.*?)<\/span>/";
+	    $patternState = "/<span class=\"region\">(.*?)<\/span>/";
+	    $patternCompany = "/Company: <\/strong><span class=\"org\">(.*?)<\/span>/";
+	    $patternName = "/<span class=\"name fn\"><span.*?>(.*?)<\/span><\/span>/";
+	    
+        preg_match($patternCompany, $body, $company);
+        if(isset($company[1])){
+            $result->company = $this->clean_scraped_html($company[1]);
+        }
+	
+	    // Look at named results first
+	    preg_match($patternName, $body, $namespans);
+	    if(isset($namespans[1])){
+	        $result->name = $this->clean_scraped_html($namespans[1]);
+        }
+        if(empty($result->name)){
+            //couldn't find a name... have to return failure
+            return false;
+        }else{
+	        preg_match($patternAddress, $body, $address);
+	        if(isset($address[1])){
+	            $result->address = $address[1];
             }
-		
-		    // Look at named results first
-		    preg_match($patternName, $body, $namespans);
-		    if(isset($namespans[1])){
-		        $result->name = $this->clean_scraped_html($namespans[1]);
-            }
-            if(empty($result->name)){
-                //couldn't find a name... have to return failure
-                return false;
-            }else{
-		        preg_match($patternAddress, $body, $address);
-		        if(isset($address[1])){
-		            $result->address = $address[1];
-	            }
-		        preg_match($patternCity, $body, $city);
-		        if(isset($city[1])){
-		            if(empty($result->address)){
-		                $result->address = $city[1];
-	                }else{
-		                $result->address .= ', ' . $city[1];
-	                }
-	            }
-		        preg_match($patternState, $body, $state);
-		        if(isset($state[1])){
-		            if(empty($result->address)){
-		                $result->address = $state[1];
-	                }else{
-		                $result->address .= ', ' . $state[1];
-	                }
-	            }
-	            if(!empty($result->address)){
-	                $result->address = $this->clean_scraped_html($result->address);
+	        preg_match($patternCity, $body, $city);
+	        if(isset($city[1])){
+	            if(empty($result->address)){
+	                $result->address = $city[1];
+                }else{
+	                $result->address .= ', ' . $city[1];
                 }
-		        return $result;
-		    }
-	    }else{
-	        return false;
+            }
+	        preg_match($patternState, $body, $state);
+	        if(isset($state[1])){
+	            if(empty($result->address)){
+	                $result->address = $state[1];
+                }else{
+	                $result->address .= ', ' . $state[1];
+                }
+            }
+            if(!empty($result->address)){
+                $result->address = $this->clean_scraped_html($result->address);
+            }
+	        return $result;
 	    }
 	}
 }

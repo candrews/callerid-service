@@ -17,18 +17,17 @@ abstract class HTTPSource extends Source
         $crl = $this->get_curl();
         
     	$ret = curl_exec($crl);
-	    if(curl_error($crl))
+	    if(curl_errno($crl)!=0)
 	    {
-		    error_log(curl_error($crl) . ' effective url: ' . curl_getinfo($crl, CURLINFO_EFFECTIVE_URL));
 		    curl_close($crl);
-		    return false;
+		    throw new TemporaryFailureException("Curl error: " . curl_error($ch[$i]) . " effective url: " . curl_getinfo($crl, CURLINFO_EFFECTIVE_URL));
 	    }
         
         $response = new HTTPResponse();
         $response->code = curl_getinfo($crl, CURLINFO_HTTP_CODE);
         $response->body = $ret;
         $this->response = $response;
-        $parsed_response = $this->parse_response();
+        $parsed_response = $this->check_and_parse_response();
 	    curl_close($crl);
         return $parsed_response;
     }
@@ -36,6 +35,16 @@ abstract class HTTPSource extends Source
     abstract function get_curl();
     
     abstract function parse_response();
+    
+    function check_and_parse_response(){
+        if($this->response->code == 404){
+            return false;
+        }elseif($this->response->code == 200){
+            return $this->parse_response();
+        }else{
+            throw new TemporaryFailureException("HTTP error: " . $this->response->code);
+        }
+    }
     
     function curl_helper($url,$post_data=false,$referrer=false,$cookie_file=false,$useragent=false)
     {
@@ -56,7 +65,9 @@ abstract class HTTPSource extends Source
 	    curl_setopt($crl,CURLOPT_RETURNTRANSFER,true);
 	    curl_setopt($crl,CURLOPT_FOLLOWLOCATION,true);
 	    //curl_setopt($crl,CURLOPT_CONNECTTIMEOUT,$curl_timeout);
-	    //curl_setopt($crl,CURLOPT_TIMEOUT,$curl_timeout);
+	    if(isset($this->timeout)){
+	        curl_setopt($crl,CURLOPT_TIMEOUT,$this->timeout);
+	    }
 	    if($cookie_file){
 		    curl_setopt($crl, CURLOPT_COOKIEJAR, $cookie_file);
 		    curl_setopt($crl, CURLOPT_COOKIEFILE, $cookie_file);

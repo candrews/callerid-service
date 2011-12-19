@@ -8,6 +8,11 @@ if (!defined('CALLERID')) {
 //include the name of the source that returned the result in the output?
 $config['include_source_in_result']=true;
 
+//default timeout for http sources (in seconds).
+//When a source times out, it is treated as if it did not return a result for the looking it was performing.
+//If not set, no timeout is used.
+//$config['default_timeout']=5;
+
 // configure your sources by adding to the $source_configuration array.
 //you can check a local database by configuring the MySQLiDB source
 /*

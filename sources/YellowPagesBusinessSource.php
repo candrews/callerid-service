@@ -19,21 +19,17 @@ class YellowPagesBusinessSource extends HTTPSource
 
     function parse_response()
     {
-        if($this->response->code == 200){
-            $body = $this->response->body;
+        $body = $this->response->body;
 
-		    $result = new Result();
-		    $result->name = $this->clean_scraped_html($this->get_name($body));
-		    if(empty($result->name)){
-		        return false;
-	        }
-                    //for yellow pages, all results are company names, so company = name
-                    $result->company = $result->name;
-		    $result->address = $this->clean_scraped_html($this->get_address($body));
-		    return $result;
-	    }else{
+	    $result = new Result();
+	    $result->name = $this->clean_scraped_html($this->get_name($body));
+	    if(empty($result->name)){
 	        return false;
-	    }
+        }
+                //for yellow pages, all results are company names, so company = name
+                $result->company = $result->name;
+	    $result->address = $this->clean_scraped_html($this->get_address($body));
+	    return $result;
 	}
 
         function get_name($body){

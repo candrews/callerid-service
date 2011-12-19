@@ -82,9 +82,6 @@ if(empty($thenumber_orig)){
         $format = $format_orig;
     }
 
-    //cache for 1 day
-    header('Expires: ' . gmdate('D, d M Y H:i:s', time()+24*60*60) . ' GMT');
-
     switch($format){
         case 'json':
             header('Content-type: application/javascript');
@@ -135,6 +132,8 @@ if(empty($thenumber_orig)){
     
     $http_sources = array();
     
+    $cacheable = true;
+    
     $country = false;
     if(Event::handle('CleanNumber', array($thenumber_orig, $thenumber, $agent_country, &$number_cleaner_result))){
         foreach($config['number_cleaners'] as $number_cleaner_name){
@@ -155,7 +154,7 @@ if(empty($thenumber_orig)){
             }
         }
     }
-    if(Event::handle('PerformLookup', array($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result))){
+    if(Event::handle('PerformLookup', array($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result, &$cacheable))){
         if($country !== false){
             foreach($config['sources'] as $source_index => $source_configuration)
             {
@@ -174,17 +173,26 @@ if(empty($thenumber_orig)){
                 }
                 $source->thenumber = $thenumber;
                 $source->country = $country;
-                if($source->prepare()){
-                    if($source instanceof HTTPSource){
-                        $http_sources[$source_index]=$source;
-                    }else{
-                        $result = $source->lookup();
-                        if($result !== false){
-                            $non_http_winning_result = $result;
-                            $result->source = get_class($source);
-                            break;
+                try{
+                    if($source->prepare()){
+                        if($source instanceof HTTPSource){
+                            if(!isset($source->timeout) && isset($config['default_timeout'])){
+                                //no source specific timeout set, and the default timeout is set, so use the default timeout
+                                $source->timeout = $config['default_timeout'];
+                            }
+                            $http_sources[$source_index]=$source;
+                        }else{
+                            $result = $source->lookup();
+                            if($result !== false){
+                                $non_http_winning_result = $result;
+                                $result->source = get_class($source);
+                                break;
+                            }
                         }
                     }
+                }catch(TemporaryFailureException $e){
+                    $cacheable = false;
+                    error_log("Temporary failure for source " . get_class($source) . ": " . $e->getMessage());
                 }
             }
             if($http_sources){
@@ -218,20 +226,26 @@ if(empty($thenumber_orig)){
                                 if($winning_index == null || $winning_index>$i){
                                     //this result may become the winner, as it's a better priority than the current winner
                                     // Check for errors
-                                    $curlError = curl_error($ch[$i]);
-                                    if($curlError == "") {
-                                        $response = new HTTPResponse();
-                                        $response->code = curl_getinfo($ch[$i], CURLINFO_HTTP_CODE);
-                                        $response->body = curl_multi_getcontent($ch[$i]);
-                                        $source->response = $response;
-                                        $result = $source->parse_response();
-                                        if($result !== false){
-                                            $result->source = get_class($source);
-                                            $winning_result = $result;
-                                            $winning_index = $i;
+                                    try{
+                                        if($info['result']!=0){
+                                            throw new TemporaryFailureException("Curl error: #" . $info['result'] . " " . $info['msg'] . " effective url: " . curl_getinfo($ch[$i], CURLINFO_EFFECTIVE_URL));
+                                        }elseif(curl_errno($ch[$i])!=0) {
+                                            throw new TemporaryFailureException("Curl error: #" . curl_errno($ch[$i]) . " " . curl_error($ch[$i]) . " effective url: " . curl_getinfo($ch[$i], CURLINFO_EFFECTIVE_URL));
+                                        }else{
+                                            $response = new HTTPResponse();
+                                            $response->code = curl_getinfo($ch[$i], CURLINFO_HTTP_CODE);
+                                            $response->body = curl_multi_getcontent($ch[$i]);
+                                            $source->response = $response;
+                                            $result = $source->check_and_parse_response();
+                                            if($result !== false){
+                                                $result->source = get_class($source);
+                                                $winning_result = $result;
+                                                $winning_index = $i;
+                                            }
                                         }
-                                    } else {
-                                        error_log("Curl error on handle $i. Source: " . get_class($source) . ": $curlError");
+                                    }catch(TemporaryFailureException $e){
+                                        $cacheable = false;
+                                        error_log("Temporary failure for source " . get_class($source) . ": " . $e->getMessage());
                                     }
                                 }
                                 // Remove and close the handle
@@ -282,7 +296,15 @@ if(empty($thenumber_orig)){
             }
         }
     }
-    Event::handle('AfterLookup', array($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result));
+    Event::handle('AfterLookup', array($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result, &$cacheable));
+    
+    if($cacheable){
+        //cache for 1 day
+        header('Expires: ' . gmdate('D, d M Y H:i:s', time()+24*60*60) . ' GMT');
+    }else{
+        //do not cache
+        header('Expires: ' . gmdate('D, d M Y H:i:s', time()-24*60*60) . ' GMT');
+    }
 
     if($winning_result === false){
         header("HTTP/1.0 404 Not Found");

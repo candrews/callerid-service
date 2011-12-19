@@ -19,30 +19,26 @@ class UkPhoneInfoSource extends HTTPSource
 
 	function parse_response()
 	{
-        if($this->response->code == 200){
-            $body = $this->response->body;
-            
-            if(preg_match('/probably not valid/', $body)){
-                return false;
-            }
-            
-	        $pattern = '/<h2>(.*?)<\/h2>/si';
-	        
-	        if(preg_match($pattern, $body, $match)){
-		        $result = new Result();
-		        $result->name = $this->clean_scraped_html($match[1]);
-		        if(empty($result->name)){
-		            return false;
-	            }else{
-	                $result->address = $result->name;
-	                return $result;
-                }
+        $body = $this->response->body;
+        
+        if(preg_match('/probably not valid/', $body)){
+            return false;
+        }
+        
+        $pattern = '/<h2>(.*?)<\/h2>/si';
+        
+        if(preg_match($pattern, $body, $match)){
+	        $result = new Result();
+	        $result->name = $this->clean_scraped_html($match[1]);
+	        if(empty($result->name)){
+	            return false;
             }else{
-                return false;
+                $result->address = $result->name;
+                return $result;
             }
-	    }else{
-	        return false;
-	    }
+        }else{
+            return false;
+        }
 	}
 }
 

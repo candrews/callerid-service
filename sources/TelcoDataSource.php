@@ -23,47 +23,43 @@ class TelcoDataSource extends HTTPSource
 	
 	function parse_response()
 	{
-        if($this->response->code == 200){
-            $body = $this->response->body;
-		    
-		    $start = strpos($body, "<englishname>");
-		    $englishname = substr($body,$start+13);
-		    $end = strpos($englishname, "</englishname>");
-		    $englishname = substr($englishname,0,$end);
+        $body = $this->response->body;
+	    
+	    $start = strpos($body, "<englishname>");
+	    $englishname = substr($body,$start+13);
+	    $end = strpos($englishname, "</englishname>");
+	    $englishname = substr($englishname,0,$end);
 
-		    if(! $englishname){
-			 $start = strpos($body, "<ratecenter>");
-			 $englishname = substr($body,$start+12);
-			 $end = strpos($englishname, "</ratecenter>");
-			 $englishname = substr($englishname,0,$end);
-		   }
-		    
-		    //$start2 = strpos($body, "<company>");
-		    //$result3 = substr($body,$start2+9);
-		    //$end2 = strpos($result3, "</company>");
-		    //$result3 = substr($result3,0,$end2);
-		    
-		    $start = strpos($body, "<state>");
-		    $state = substr($body,$start+7);
-		    $end = strpos($state, "</state>");
-		    $state = substr($state,0,$end);
-		    
-		    $body = $englishname.", ".$state ;
-		    
-		    if(strlen($englishname) > 1)
-		    {
-			    $result = new Result();
-			    $result->name = $this->clean_scraped_html($body);
-			    //since this source only returns a location, address and name are the same
-			    $result->address = $result->name;
-			    return $result;
-		    }
-		    else
-		    {
-			    return false;
-		    }
-	    }else{
-	        return false;
+	    if(! $englishname){
+		 $start = strpos($body, "<ratecenter>");
+		 $englishname = substr($body,$start+12);
+		 $end = strpos($englishname, "</ratecenter>");
+		 $englishname = substr($englishname,0,$end);
+	   }
+	    
+	    //$start2 = strpos($body, "<company>");
+	    //$result3 = substr($body,$start2+9);
+	    //$end2 = strpos($result3, "</company>");
+	    //$result3 = substr($result3,0,$end2);
+	    
+	    $start = strpos($body, "<state>");
+	    $state = substr($body,$start+7);
+	    $end = strpos($state, "</state>");
+	    $state = substr($state,0,$end);
+	    
+	    $body = $englishname.", ".$state ;
+	    
+	    if(strlen($englishname) > 1)
+	    {
+		    $result = new Result();
+		    $result->name = $this->clean_scraped_html($body);
+		    //since this source only returns a location, address and name are the same
+		    $result->address = $result->name;
+		    return $result;
+	    }
+	    else
+	    {
+		    return false;
 	    }
 	}
 }

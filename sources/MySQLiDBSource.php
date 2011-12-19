@@ -34,7 +34,7 @@ class MySQLiDBSource extends Source
     function lookup(){
 	    $link = mysqli_connect($this->DB_Host, $this->DB_User, $this->DB_Password, $this->DB_Name);
 	    if(mysqli_connect_error()){
-            error_log('Connect Error (' . mysqli_connect_errno() . ') '. mysqli_connect_error());
+            throw new TemporaryFailureException('Connect Error (' . mysqli_connect_errno() . ') '. mysqli_connect_error());
 	    }else{
 	        if($stmt = mysqli_prepare($link, $this->SQL_Query)){
 	            mysqli_stmt_bind_param($stmt, 's', $this->thenumber);
@@ -53,7 +53,7 @@ class MySQLiDBSource extends Source
 	                return $result;
 	            }
             }else{
-                error_log('Failed to prepare statement: ' . $this->SQL_Query);
+                throw new TemporaryFailureException('Failed to prepare statement: ' . $this->SQL_Query);
             }
 	    }
     }

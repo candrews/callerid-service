@@ -35,19 +35,15 @@ class HittaSource extends HTTPSource
 
 	function parse_response()
 	{
-        if($this->response->code == 200){
-            $body = $this->response->body;
+        $body = $this->response->body;
 
-		    $result = new Result();
-		    $result->name = $this->clean_scraped_html($this->get_name($body));
-		    if(empty($result->name)){
-		        return false;
-	        }
-		    $result->address = $this->clean_scraped_html($this->get_address($body));
-		    return $result;
-	    }else{
+	    $result = new Result();
+	    $result->name = $this->clean_scraped_html($this->get_name($body));
+	    if(empty($result->name)){
 	        return false;
-	    }
+        }
+	    $result->address = $this->clean_scraped_html($this->get_address($body));
+	    return $result;
 	}
 
 	function get_name($body){

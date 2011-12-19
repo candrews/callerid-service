@@ -28,9 +28,11 @@ class MemcachePlugin extends Plugin
         }
     }
 
-    function onAfterLookup($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result){
-        $this->_ensureConn();
-        $this->_conn->set($thenumber, $winning_result);
+    function onAfterLookup($thenumber_orig, $thenumber, $country, $agent_country, &$winning_result, &$cacheable){
+        if($cacheable){
+            $this->_ensureConn();
+            $this->_conn->set($thenumber, $winning_result);
+        }
         return true;
     }
 

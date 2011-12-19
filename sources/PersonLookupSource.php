@@ -23,25 +23,21 @@ class PersonLookupSource extends HTTPSource
 
 	function parse_response()
 	{
-        if($this->response->code == 200){
-            $body = $this->response->body;
-            
-	        $pattern = '/<div class="result">.*?<div class=\"col\">(.+?)<\/div>\s*(?:<div class=\"col\">(.+?)<\/div>)?/si';
-	        if(preg_match($pattern, $body, $match)){
-		        $result = new Result();
-		        $result->name = $this->clean_scraped_html($match[1]);
-		        if(isset($match[2])) $result->address = $this->clean_scraped_html($match[2]);
-		        if(empty($result->name)){
-		            return false;
-	            }else{
-	                return $result;
-                }
+        $body = $this->response->body;
+        
+        $pattern = '/<div class="result">.*?<div class=\"col\">(.+?)<\/div>\s*(?:<div class=\"col\">(.+?)<\/div>)?/si';
+        if(preg_match($pattern, $body, $match)){
+	        $result = new Result();
+	        $result->name = $this->clean_scraped_html($match[1]);
+	        if(isset($match[2])) $result->address = $this->clean_scraped_html($match[2]);
+	        if(empty($result->name)){
+	            return false;
             }else{
-                return false;
+                return $result;
             }
-	    }else{
-	        return false;
-	    }
+        }else{
+            return false;
+        }
 	}
 }
 

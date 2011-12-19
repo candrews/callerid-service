@@ -21,53 +21,49 @@ class PagineBiancheSource extends HTTPSource
 	}
 	
 	function parse_response(){
-        if($this->response->code == 200){
-	        $result = new Result();
-	        
-	        $body = $this->response->body;
-	        
-		    $notfound = strpos($body, "Nessun risultato trovato");
-		    if($notfound)
-		    {
-			    return false;
-		    }
-		    
-		    $patternAddress = '/<div id="addr_1".*?>(.+?)<\/span><\/div>/si';
-		    $patternName = '/<div class=\"org fn\">(.+?)<\/div>/si';
-		    $patternCompany = '/<div class=\"org fn\">(.+?)<\/div>/si';
-		    
-            preg_match($patternName, $body, $name);
-            if(isset($name[1])){
-                $patternFirstLast = '/<strong>(.+?)<\/strong>(.+)/sim';
-                preg_match($patternFirstLast, $name[1], $firstLast);
-                if(isset($firstLast[1]) && isset($firstLast[2])){
-                    $result->name = $this->clean_scraped_html($firstLast[2] . ' ' . $firstLast[1]);
-                }else{
-                    $result->name = $this->clean_scraped_html($name[1]);
-                }
+        $result = new Result();
+        
+        $body = $this->response->body;
+        
+	    $notfound = strpos($body, "Nessun risultato trovato");
+	    if($notfound)
+	    {
+		    return false;
+	    }
+	    
+	    $patternAddress = '/<div id="addr_1".*?>(.+?)<\/span><\/div>/si';
+	    $patternName = '/<div class=\"org fn\">(.+?)<\/div>/si';
+	    $patternCompany = '/<div class=\"org fn\">(.+?)<\/div>/si';
+	    
+        preg_match($patternName, $body, $name);
+        if(isset($name[1])){
+            $patternFirstLast = '/<strong>(.+?)<\/strong>(.+)/sim';
+            preg_match($patternFirstLast, $name[1], $firstLast);
+            if(isset($firstLast[1]) && isset($firstLast[2])){
+                $result->name = $this->clean_scraped_html($firstLast[2] . ' ' . $firstLast[1]);
             }else{
-                preg_match($patternCompany, $body, $company);
-                if(isset($company[1])){
-                    $result->company = $this->clean_scraped_html($company[1]);
-                }
+                $result->name = $this->clean_scraped_html($name[1]);
             }
-		    
-            preg_match($patternAddress, $body, $address);
-            if(isset($address[1])){
-                $result->address = $this->clean_scraped_html($address[1]);
+        }else{
+            preg_match($patternCompany, $body, $company);
+            if(isset($company[1])){
+                $result->company = $this->clean_scraped_html($company[1]);
             }
+        }
+	    
+        preg_match($patternAddress, $body, $address);
+        if(isset($address[1])){
+            $result->address = $this->clean_scraped_html($address[1]);
+        }
 
-	        if(empty($result->name)){
-	            $result->name = $result->company;
-            }
-            if(empty($result->name)){
-                //couldn't find a name... have to return failure
-                return false;
-            }else{
-		        return $result;
-		    }
-	    }else{
-	        return false;
+        if(empty($result->name)){
+            $result->name = $result->company;
+        }
+        if(empty($result->name)){
+            //couldn't find a name... have to return failure
+            return false;
+        }else{
+	        return $result;
 	    }
     }
 }

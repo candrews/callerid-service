@@ -24,25 +24,21 @@ class LocalTelSource extends HTTPSource
 
 	function parse_response()
 	{
-        if($this->response->code == 200){
-            $body = $this->response->body;
+        $body = $this->response->body;
 
-	        $pattern = '/<div class=\"telrecord vcard\">.*?<a [^>]*?class=\"fn org\">(.+?)<\/a>.*?<div class=\"adr\">(.+?)<\/div>/si';
-	        if(preg_match($pattern, $body, $match)){
-		        $result = new Result();
-		        $result->name = $this->clean_scraped_html($match[1]);
-		        $result->address = $this->clean_scraped_html($match[2]);
-		        if(empty($result->name)){
-		            return false;
-	            }else{
-	                return $result;
-                }
+        $pattern = '/<div class=\"telrecord vcard\">.*?<a [^>]*?class=\"fn org\">(.+?)<\/a>.*?<div class=\"adr\">(.+?)<\/div>/si';
+        if(preg_match($pattern, $body, $match)){
+	        $result = new Result();
+	        $result->name = $this->clean_scraped_html($match[1]);
+	        $result->address = $this->clean_scraped_html($match[2]);
+	        if(empty($result->name)){
+	            return false;
             }else{
-                return false;
+                return $result;
             }
-	    }else{
-	        return false;
-	    }
+        }else{
+            return false;
+        }
 	}
 
 	function get_name($body){
