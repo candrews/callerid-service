@@ -21,7 +21,12 @@ class MySQLLoggingPlugin extends Plugin
         }else{
             if($stmt = mysqli_prepare($link, $this->SQL_Query)){
                 $query_time = (microtime(true) - $this->query_start_time) * 1000;
-                $ret = mysqli_stmt_bind_param($stmt, 'sssssii', $agent_country, $thenumber_orig, $thenumber, $country, $winning_result->name, $query_time, $cacheable);
+                if($winning_result === false){
+                    $name = null;
+                }else{
+                    $name = $winning_result->name;
+                }
+                $ret = mysqli_stmt_bind_param($stmt, 'sssssii', $agent_country, $thenumber_orig, $thenumber, $country, $name, $query_time, $cacheable);
                 assert($ret);
                 $ret = mysqli_stmt_execute($stmt);
                 assert($ret);
