@@ -84,7 +84,7 @@ if(empty($thenumber_orig)){
 
     switch($format){
         case 'json':
-            header('Content-type: application/javascript;charset=UTF-8');
+            header('Content-type: application/json;charset=UTF-8');
             break;
         case 'basic':
             header('Content-type: text/plain;charset=UTF-8');
