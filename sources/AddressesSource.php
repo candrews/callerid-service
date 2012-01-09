@@ -18,7 +18,7 @@ class AddressesSource extends HTTPSource
 	
 	function get_curl()
 	{
-	    return $this->curl_helper('http://phonenumbers.addresses.com/results.php?ReportType=33&qfilter[pro]=on&qi=0&qk=10&qnpa=' . substr($this->thenumber,2,3) . '&qp='.substr($this->thenumber,5));
+	    return $this->curl_helper('http://phonenumbers.addresses.com/results.php?ReportType=33&qfilter%5Bpro%5D=on&qi=0&qk=10&qnpa=' . substr($this->thenumber,2,3) . '&qp='.substr($this->thenumber,5));
 	}
 	
 	function parse_response()
