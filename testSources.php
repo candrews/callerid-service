@@ -31,7 +31,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             array('CountrySource', '+17817498755', 'us', 'Unknown (United States)', null),
             array('FonectaSource', '+35897012298', 'fi', 'Pizza-Kebab Apollo', 'Vaasankatu 8, 00500 HELSINKI'),
             array('FonectaSource', '+35896012279', 'fi', null),
-            array('HittaSource', '+468291229', 'se', 'John Doe MC', 'Vidjavägen 2 123 52 Farsta'),
+            array('HittaSource', '+468291229', 'se', 'John Doe MC', 'Vidjavägen 2 12352 FARSTA'),
             array('HittaSource', '+468252227', 'se', null),
             array('InfobelSource', '+390744433549', 'it', 'ALBERGO RISTORANTE LOCANDA DEL VECCHIO MAGLIO (CENTRALINO ALBERGO RISTORANTE)', 'VLE BRIN 148, 05100 TERNI'),
             array('InfobelSource', '+493041726953', 'de', 'Jones Brigitte', 'Trautenaustr. 11, 10717 Berlin'),

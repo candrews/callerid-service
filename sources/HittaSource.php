@@ -30,7 +30,7 @@ class HittaSource extends HTTPSource
 
 	function get_curl()
 	{
-	    return $this->curl_helper('http://wap.hitta.se/default.aspx?Who=' . urlencode($this->thenumber));
+	    return $this->curl_helper('http://wap.hitta.se/' . urlencode($this->thenumber) . ' /f%C3%B6retag_och_personer');
 	}
 
 	function parse_response()
@@ -47,7 +47,7 @@ class HittaSource extends HTTPSource
 	}
 
 	function get_name($body){
-	    $patternName = '/<p><b>(.+)<\/b>/si';
+	    $patternName = '/<h1>(.*?)<\/h1>/si';
 	    preg_match($patternName, $body, $name);
 	    if(isset($name[1])){
 	        return $name[1];
@@ -57,10 +57,10 @@ class HittaSource extends HTTPSource
 	}
 
 	function get_address($body){
-	    $patternAddress = '/href="wtai.*?title="Link".*?<br\/>(.*?)<a/si';
+	    $patternAddress = '/<a href="\/vagbeskrivning.*?\|(.*?)" onclick/si';
 	    preg_match($patternAddress, $body, $address);
 	    if(isset($address[1])){
-	        return $address[1];
+	        return urldecode($address[1]);
         }else{
             return null;
         }
