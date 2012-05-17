@@ -24,7 +24,7 @@ class AddressesYellowPagesSource extends HTTPSource
     function parse_response()
     {
         $body = $this->response->body;
-        $pattern = '/<a class="listing_name .*?>(.*?)<\/a>.*?<div class="sml_txt">(.*?)<\/div>/sim';
+        $pattern = '/<a\s+class="listing_name .*?>(.*?)<\/a>.*?<div\s+class="sml_txt".?>(.*?)<\/div>/sim';
         if(preg_match($pattern, $body, $match)){
 	        $result = new Result();
 	        $result->name = $this->clean_scraped_html($match[1]);

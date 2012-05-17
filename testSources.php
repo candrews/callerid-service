@@ -23,7 +23,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
         return array(
             array('AddressesSource', '+17817498755', 'us', 'Lynn D Donovan', '36 Myers Farm Rd, Hingham, MA 02043'),
             array('AddressesSource', '+18002927508', 'us', null),
-            array('AddressesYellowPagesSource', '+18604297433', 'us', 'Willington Pizza House', 'Route 32, Willington, CT 06279'),
+            array('AddressesYellowPagesSource', '+18604297433', 'us', 'Willington Pizza House', '25 River Rd, Willington, CT 06279'),
             array('AddressesYellowPagesSource', '+18002927508', 'us', null),
             array('CanpagesSource', '+18002927508', 'ca', null),
             array('CitizensInfoSource', '+12169215024', 'us', 'Able Dixon', '3259 Van Aken Blvd, Shaker Heights, OH 44120'),
