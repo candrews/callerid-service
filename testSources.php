@@ -53,7 +53,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             array('YellowPagesPersonSource', '+17817498755', 'us', 'Lynn D Donovan', '36 Myers Farm Rd, Hingham, MA 02043'),
             array('YellowPagesPersonSource', '+12016608433', 'us', 'Jae L Choi', '119 Bogerts Mill Rd, Harrington Park, NJ 07640'),
             array('YellowPagesPersonSource', '+18002927508', 'us', null),
-            array('YellowPages_PTSource', '+351219560449', 'pt', 'Xou Pizza-Pizzaria e Churrasqueira Sociedade Lda', 'Avenida Ernest Solvay 5-lj 5, 2625-168 PÓVOA DE SANTA IRIA'),
+            array('YellowPages_PTSource', '+351232415051', 'pt', 'Best Pizza Lda', 'Avenida 25 Abril 35-r/c, 3510-118 VISEU'),
             array('YellowPages_PTSource', '+351319570449', 'pt', null)
         );
     }

@@ -21,9 +21,7 @@ class YellowPages_PTSource extends HTTPSource
 	{
         $body = $this->response->body;
         
-        $pattern = '/<div class="result">.*?<div class=\"col\">(.+?)<\/div>\s*(?:<div class=\"col\">(.+?)<\/div>)?/si';
-        
-        $pattern = '/<span id=\"listingbase1\" class=\"result-title-link result-bn\">(.+?)<\/span>.*?<div class=\"result-address\">(.+?)<\/div>/si';
+        $pattern = '/<span id=\"listingbase1\" class=\"[^"]*result-bn[^"]*\">(.+?)<\/span>.*?<div\s*class=\"result-address\">(.+?)<\/div>/si';
         if(preg_match($pattern, $body, $match)){
 	        $result = new Result();
 	        $result->name = $this->clean_scraped_html($match[1]);
