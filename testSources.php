@@ -41,7 +41,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             array('PagineBiancheSource', '+390697605917', 'it', 'AL CASALE PIZZERIA - Di ALESSIO E NOEMI TRIBINI Snc', 'V. Rocca Fiorita 155 - 00133 Roma (RM)'),
             array('PagineBiancheSource', '+390521830398', 'it', 'Jones Alan', 'Via Calestano 202 - 43035 Felino (PR)'),
             array('PagineBiancheSource', '+390522730498', 'it', null),
-            array('PersonLookupSource', '+61393952708', 'au', 'Jones A', '12 Caledonian Way, Point Cook, VIC 3030'),
+            array('PersonLookupSource', '+61295231015', 'au', 'Burnell-Jones C', '21 Berry St Cronulla NSW 2230'),
             array('PersonLookupSource', '+61393962708', 'au', null),
             array('TelcoDataSource', '+13137370000', 'us', 'DETROITZN5, MI', 'DETROITZN5, MI'),
             array('TelcoDataSource', '+18002927508', 'us', null),
