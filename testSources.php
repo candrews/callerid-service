@@ -34,7 +34,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             array('HittaSource', '+468291229', 'se', 'John Doe MC', 'Vidjavägen 2 12352 FARSTA'),
             array('HittaSource', '+468252227', 'se', null),
             array('InfobelSource', '+390744433549', 'it', 'ALBERGO RISTORANTE LOCANDA DEL VECCHIO MAGLIO (CENTRALINO ALBERGO RISTORANTE)', 'VLE BRIN 148, 05100 TERNI'),
-            array('InfobelSource', '+493041726953', 'de', 'Jones Brigitte', 'Trautenaustr. 11, 10717 Berlin'),
+            array('InfobelSource', '+492234497590', 'de', '1A Pizza Colonia', 'Aachener Str. 1169, 50858 Köln'),
             array('InfobelSource', '+493041726954', 'de', null),
             array('LocalTelSource', '+41264244141', 'ch', 'A-Allô Pizza', 'route de la Glâne 7, 1700 Fribourg'),
             array('LocalTelSource', '+41254254141', 'ch', null),
