@@ -38,7 +38,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             array('InfobelSource', '+493041726954', 'de', null),
             array('LocalTelSource', '+41264244141', 'ch', 'A-Allô Pizza', 'route de la Glâne 7, 1700 Fribourg'),
             array('LocalTelSource', '+41254254141', 'ch', null),
-            array('PagineBiancheSource', '+390697605917', 'it', 'AL CASALE PIZZERIA - Di ALESSIO E NOEMI TRIBINI Snc', 'Via Rocca Fiorita 155 - 00133 Valle Fiorita (RM)'),
+            array('PagineBiancheSource', '+390697605917', 'it', 'AL CASALE PIZZERIA - Di ALESSIO E NOEMI TRIBINI Snc', 'V. Rocca Fiorita 155 - 00133 Roma (RM)'),
             array('PagineBiancheSource', '+390521830398', 'it', 'Jones Alan', 'Via Calestano 202 - 43035 Felino (PR)'),
             array('PagineBiancheSource', '+390522730498', 'it', null),
             array('PersonLookupSource', '+61393952708', 'au', 'Jones A', '12 Caledonian Way, Point Cook, VIC 3030'),
