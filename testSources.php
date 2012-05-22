@@ -49,7 +49,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
             array('UkPhoneInfoSource', '+442175891278', 'uk', null),
             array('WhitePagesSource', '+17817498755', 'ca', 'Lynn D Donovan', 'Myers Farm Rd, Hingham, MA'),
             array('WhitePagesSource', '+18002927508', 'ca', null),
-            array('YellowPagesBusinessSource', '+18604297433', 'us', 'Willington Pizza House', 'Route 32, Willington, CT 06279'),
+            array('YellowPagesBusinessSource', '+18604297433', 'us', 'Willington Pizza House', '25 River Rd, Willington, CT 06279'),
             array('YellowPagesPersonSource', '+17817498755', 'us', 'Lynn D Donovan', '36 Myers Farm Rd, Hingham, MA 02043'),
             array('YellowPagesPersonSource', '+12016608433', 'us', 'Jae L Choi', '119 Bogerts Mill Rd, Harrington Park, NJ 07640'),
             array('YellowPagesPersonSource', '+18002927508', 'us', null),

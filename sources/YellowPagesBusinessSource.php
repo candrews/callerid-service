@@ -33,7 +33,7 @@ class YellowPagesBusinessSource extends HTTPSource
 	}
 
         function get_name($body){
-            $patternName = '/<h3 class=\"business-name fn org\">(.+?)<\/h3>/sim';
+            $patternName = '/<h3 class=\"business-name[^"]*\">(.+?)<\/h3>/sim';
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
                 return $name[1];
@@ -43,7 +43,7 @@ class YellowPagesBusinessSource extends HTTPSource
         }
 
         function get_address($body){
-            $patternName = '/<span class=\"listing-address adr\">(.+?)<\/span>\s*<\/span>\s*<\/span>/si';
+            $patternName = '/<span class=\"listing-address adr[^"]*\">(.+?)<\/span>\s*<\/span>\s*<\/span>/si';
             preg_match($patternName, $body, $name);
             if(isset($name[1])){
                 return $name[1];
