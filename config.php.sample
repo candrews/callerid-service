@@ -44,6 +44,7 @@ $config['sources'][]='PagineBianche';
 $config['sources'][]='Infobel';
 $config['sources'][]='Fonecta';
 $config['sources'][]='UkPhoneInfo';
+$config['sources'][]='Libphonenumber';
 $config['sources'][]='TelcoData';
 $config['sources'][]='Country';
 

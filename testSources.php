@@ -21,6 +21,7 @@ class SourcesTest extends PHPUnit_Framework_TestCase
 {
     public function provider(){
         return array(
+            array('LibphonenumberSource', '+17817498755', 'us', 'Hingham, MA', 'Hingham, MA'),
             array('AddressesSource', '+17817498755', 'us', 'Lynn D Donovan', '36 Myers Farm Rd, Hingham, MA 02043'),
             array('AddressesSource', '+18002927508', 'us', null),
             array('AddressesYellowPagesSource', '+18604297433', 'us', 'Willington Pizza House', '25 River Rd, Willington, CT 06279'),
