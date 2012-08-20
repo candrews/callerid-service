@@ -2,7 +2,7 @@
 define('CALLERID',true);
 define('INSTALLDIR', dirname(__FILE__));
 
-$latestAndroidVersionCode = 5;
+$latestAndroidVersionCode = 6;
 
 /**
  * Configure and instantiate a plugin into the current configuration.
