@@ -212,7 +212,11 @@ if(empty($thenumber_orig)){
                 while ($runningHandles && $execReturnValue == CURLM_OK) {
                     // Wait forever for network
                     $numberReady = curl_multi_select($mh);
-                    if ($numberReady != -1) {
+                    if ($numberReady == -1) {
+                        // the behavior of curl_multiselect changed in PHP 5.3.8, see https://bugs.php.net/bug.php?id=63411
+                        // curl_multi_select used to wait, now it immediately returns -1. So we have to sleep for a bit and try again.
+                        usleep(100);
+                    }else{
                         // Pull in any new data, or at least handle timeouts
                         do {
                             $execReturnValue = curl_multi_exec($mh, $runningHandles);
