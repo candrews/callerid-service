@@ -207,7 +207,7 @@ if(empty($thenumber_orig)){
                 $winning_index = null;
                 do{
                     $execReturnValue = curl_multi_exec($mh, $runningHandles);
-                }while($execReturnValue == CURLM_CALL_MULTI_PERFORM);
+                }while($runningHandles && $execReturnValue == CURLM_CALL_MULTI_PERFORM);
                 // Loop and continue processing the request
                 while ($runningHandles && $execReturnValue == CURLM_OK) {
                     // Wait forever for network
@@ -220,7 +220,7 @@ if(empty($thenumber_orig)){
                         // Pull in any new data, or at least handle timeouts
                         do {
                             $execReturnValue = curl_multi_exec($mh, $runningHandles);
-                        } while ($execReturnValue == CURLM_CALL_MULTI_PERFORM);
+                        } while ($runningHandles && $execReturnValue == CURLM_CALL_MULTI_PERFORM);
                     }
                     while($info = curl_multi_info_read($mh)){
                         $found_handle = false;
