@@ -20,7 +20,7 @@ abstract class HTTPSource extends Source
 	    if(curl_errno($crl)!=0)
 	    {
 		    curl_close($crl);
-		    throw new TemporaryFailureException("Curl error: " . curl_error($ch[$i]) . " effective url: " . curl_getinfo($crl, CURLINFO_EFFECTIVE_URL));
+		    throw new TemporaryFailureException("Curl error: " . curl_error($crl) . " effective url: " . curl_getinfo($crl, CURLINFO_EFFECTIVE_URL));
 	    }
         
         $response = new HTTPResponse();
